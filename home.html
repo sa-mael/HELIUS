@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HELIUS — Home</title>
+  <link rel="stylesheet" href="home.css" />
+  <link rel="icon" type="image/x-icon" href="logo.png" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="brand">HELIUS</div>
+    <nav class="site-nav">
+      <a href="start.html">Onboarding</a>
+      <a href="#" id="logoutBtn">Log out</a>
+    </nav>
+  </header>
+
+  <!-- Three-column app layout -->
+  <main class="layout">
+    <!-- LEFT: user column -->
+    <aside class="sidebar">
+      <section class="user-card">
+        <div class="avatar" aria-hidden="true">👤</div>
+        <div>
+          <h2 id="userName">User</h2>
+          <p class="muted" id="userStatus">—</p>
+        </div>
+      </section>
+
+      <section class="progress">
+        <h3>Your progress</h3>
+        <div class="bar">
+          <div class="fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <p class="muted small"><span id="progressText">0</span>% completed</p>
+      </section>
+
+      <section class="notes">
+        <h3>Notes</h3>
+        <form id="noteForm" class="note-form">
+          <input id="noteInput" type="text" placeholder="Write a note…" />
+          <button class="btn" type="submit">Add</button>
+        </form>
+        <ul class="note-list" id="noteList"></ul>
+      </section>
+
+      <section class="settings">
+        <h3>Quick settings</h3>
+        <label class="switch">
+          <input type="checkbox" id="autoTheme" />
+          <span>Auto theme by time</span>
+        </label>
+      </section>
+    </aside>
+
+    <!-- CENTER: topics wheel -->
+    <section class="center">
+      <div class="wheel" id="wheel" aria-label="Topics wheel"></div>
+      <div class="arrow" id="arrow" aria-hidden="true"></div>
+    </section>
+
+    <!-- RIGHT: topic detail panel -->
+    <aside class="detail-panel" id="detail">
+      <header class="detail-head">
+        <h2 id="detailTitle">Select a topic</h2>
+        <p class="muted" id="detailKicker">Focus will appear here.</p>
+      </header>
+      <article id="detailBody" class="detail-body">
+        <p>Pick a topic from the wheel to see summary, signals, and starter theses.</p>
+      </article>
+    </aside>
+  </main>
+
+  <script src="home.js"></script>
+</body>
+</html>

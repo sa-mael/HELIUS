@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HELIUS — living handbook</title>
+  <link rel="stylesheet" href="main.css" />
+  <link rel="icon" type="image/x-icon" href="logo.png" />
+</head>
+<body>
+
+  <!-- Header: brand left, centered menu, theme switch right -->
+  <header class="site-header">
+    <div class="brand hover-scale" aria-label="HELIUS">HELIUS</div>
+
+    <nav class="site-nav" aria-label="main">
+      <!-- Interface in English; comments in English -->
+      <a class="nav-link hover-scale" href="#about">About</a>
+      <a class="nav-link hover-scale" href="#topics">Topics</a>
+      <a class="nav-link hover-scale" href="start.html">Sign in</a>
+      <a class="btn btn-primary hover-scale" id="startBtn" href="start.html">Start</a>
+    </nav>
+
+    <div class="theme-switch" role="group" aria-label="Theme">
+      <button class="theme-btn" data-theme="dark" aria-pressed="true">Dark</button>
+      <button class="theme-btn" data-theme="light">Light</button>
+      <button class="theme-btn" data-theme="auto">Auto</button>
+    </div>
+  </header>
+
+  <!-- Two-column layout: left video (33%), right information (67%) -->
+  <main class="layout">
+    <!-- Left: compact boxed video (~20% of viewport min dimension) -->
+    <section class="pane pane-left">
+      <div class="video-wrap hover-scale">
+        <!-- Replace with your media files -->
+        <video class="hero-video" controls  autoplay muted loop playsinline preload="auto"
+               poster="poster.jpg" disablepictureinpicture
+               controlslist="nodownload noplaybackrate noremoteplayback nofullscreen">
+          <source src="0001-0210.mp4" type="video/mp4" />
+          <source src="0001-0210.webm" type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- Optional quick anchors -->
+      <ul class="quick-links">
+        <li><a class="hover-scale" href="#about">About</a></li>
+        <li><a class="hover-scale" href="#contacts">Contacts</a></li>
+        <li><a class="hover-scale" href="#resources">Resources</a></li>
+      </ul>
+    </section>
+
+    <!-- Right: information column with rich blocks -->
+    <aside class="pane pane-right" id="info" tabindex="-1" aria-label="Information column">
+
+      <!-- KPI row -->
+      <section class="kpi-row">
+        <div class="kpi hover-scale"><strong>20</strong><span>Anchor theses</span></div>
+        <div class="kpi hover-scale"><strong>120+</strong><span>Linked sources</span></div>
+        <div class="kpi hover-scale"><strong>15</strong><span>Contributors</span></div>
+        <div class="kpi hover-scale"><strong>300+</strong><span>Revisions</span></div>
+      </section>
+
+      <!-- Topic chips -->
+      <section class="chips">
+        <a href="#topics" class="chip hover-scale">Economics</a>
+        <a href="#topics" class="chip hover-scale">Technology</a>
+        <a href="#topics" class="chip hover-scale">Geopolitics</a>
+        <a href="#topics" class="chip hover-scale">Health & Science</a>
+        <a href="#topics" class="chip hover-scale">Climate & Energy</a>
+        <a href="#topics" class="chip hover-scale">Law & Policy</a>
+      </section>
+
+      <!-- Short roadmap -->
+      <section class="card hover-scale">
+        <h2>Roadmap</h2>
+        <ul class="timeline">
+          <li><time>Month 1</time> MVP with 20 theses, versions, votes, export.</li>
+          <li><time>Month 2</time> Creator drafts, private team spaces, basic API.</li>
+          <li><time>Month 3</time> Briefings, campus workshops, partner newsletters.</li>
+        </ul>
+      </section>
+
+      <!-- About -->
+      <article class="card hover-scale" id="about">
+        <h2>About us</h2>
+        <p>HELIUS is a living handbook of changing truth. We help people form positions fast with clear arguments, risks, and verifiable sources.</p>
+
+        <h3>What we do</h3>
+        <ul class="bullets">
+          <li>Capture theses as cards with tabs: <em>Summary · Versions · Sources · Discuss</em>.</li>
+          <li>Link theses into an ontology: support, refutation, dependency.</li>
+          <li>Show dynamics over time with a time-scrubber across versions.</li>
+          <li>Provide thinking tools: Bias toggles, What-if scenarios, voting.</li>
+          <li>Score impact with confidence labels and author reputation.</li>
+          <li>Export to PDF/PNG with correct citations; offer API and embeds.</li>
+        </ul>
+
+        <h3>Who it's for</h3>
+        <ul class="bullets">
+          <li>Individuals: students, creators, content analysts.</li>
+          <li>Teams: newsrooms, research groups, nonprofits, product teams.</li>
+          <li>Education &amp; think tanks: critical-thinking courses, seminars, debates.</li>
+        </ul>
+
+        <h3>How it works</h3>
+        <ol class="bullets">
+          <li>Select topics and subscribe to streams.</li>
+          <li>Open a thesis card to see summary, versions, sources, and discussion.</li>
+          <li>Toggle biases, scrub time, and run “what-if” checks.</li>
+          <li>Vote, save, and share a cited thesis card.</li>
+        </ol>
+
+        <h3>Our story</h3>
+        <ul class="bullets">
+          <li><strong>Origin:</strong> a debate club drowning in links. We split arguments into thesis cards and it worked.</li>
+          <li><strong>MVP:</strong> 20 theses, public diffs, voting, export. First users were lecturers and editors.</li>
+          <li><strong>Growth:</strong> ontology links, confidence labels, private team spaces, API and embed widget.</li>
+          <li><strong>Now:</strong> building a versioned thesis base with open change history and author reputation.</li>
+        </ul>
+
+        <h3>Impact</h3>
+        <ul class="bullets">
+          <li>Less noise: claims ship with sources.</li>
+          <li>Faster decisions: positions form through versions and counter-arguments.</li>
+          <li>Transparency: changes are visible in diffs and over time.</li>
+          <li>Skill-building: users practice evidence comparison and risk framing.</li>
+          <li>Team effect: reviews and a shared format reduce unproductive debate.</li>
+        </ul>
+
+        <h3>Principles</h3>
+        <ul class="bullets">
+          <li>Sources before opinions.</li>
+          <li>Versions over finality.</li>
+          <li>Public diffs and confidence labels.</li>
+          <li>Zero tolerance for personal attacks.</li>
+          <li>User data is not a product; clear privacy controls.</li>
+        </ul>
+
+        <h3>Source policy &amp; moderation</h3>
+        <ul class="bullets">
+          <li>Documented acceptance criteria for sources.</li>
+          <li>Mandatory citations with caps on verbatim quotes.</li>
+          <li>Confidence labels at thesis and version levels.</li>
+          <li>Appeals and an edits journal.</li>
+        </ul>
+
+        <h3>Author reputation</h3>
+        <ul class="bullets">
+          <li>Reputation grows via verifiable theses, precise updates, and quality sources.</li>
+          <li>Citations and reviews weigh more than likes.</li>
+          <li>Author reputation is distinct from topic reputation.</li>
+        </ul>
+
+        <h3>Quality metrics</h3>
+        <ul class="bullets">
+          <li>Meaningful reads: &gt;45s on card and ≥1 source opened.</li>
+          <li>Activation: first-day vote plus ≥3 sources opened.</li>
+          <li>Retention: returns to topics and versions per thesis.</li>
+          <li>UGC share, review rate, ontology link depth.</li>
+        </ul>
+
+        <h3>Safety &amp; legal</h3>
+        <ul class="bullets">
+          <li>Content licenses, DMCA process, explicit disclaimers.</li>
+          <li>Separate moderation ledger; audit trails for orgs.</li>
+          <li>Private spaces, SSO, and change audits for teams.</li>
+        </ul>
+
+        <h3>How to work with us</h3>
+        <ul class="bullets">
+          <li>Individuals: read, save, subscribe to topics.</li>
+          <li>Creators: publish theses, maintain versions, connect sources.</li>
+          <li>Teams: review in private spaces, export briefs.</li>
+          <li>Partners &amp; EDU: embed the widget in blogs and courses; run workshops.</li>
+        </ul>
+
+        <h3>Our commitment</h3>
+        <ul class="bullets">
+          <li>Transparent sources.</li>
+          <li>Honest corrections with dates.</li>
+          <li>Explainable ranking and reputation logic.</li>
+        </ul>
+
+        <h3>Contact</h3>
+        <p>team@helius.example</p>
+      </article>
+
+      <!-- Topics (6) with richer facts -->
+      <article class="card hover-scale" id="topics">
+        <h2>Topics and streams</h2>
+        <p>Subscribe to streams you care about. Each card shows scope, methods, and core sources.</p>
+
+        <div class="grid-2">
+          <div class="info-item hover-scale" data-topic="economics">
+            <h3>Economics</h3>
+            <p>Markets, policy, trade, labor, incentives.</p>
+            <ul>
+              <li>Questions: inflation vs. unemployment, productivity, wages.</li>
+              <li>Methods: time-series, natural experiments, cost–benefit.</li>
+              <li>Indicators: CPI, PPI, GDP, unemployment, real wages.</li>
+            </ul>
+            <p><strong>Core sources:</strong> IMF, World Bank, OECD, BLS, BEA, FRED.</p>
+          </div>
+
+          <div class="info-item hover-scale" data-topic="technology">
+            <h3>Technology</h3>
+            <p>AI, cybersecurity, platforms, open source, regulation.</p>
+            <ul>
+              <li>Risks: alignment, privacy, misuse, critical infrastructure.</li>
+              <li>Benchmarks: reliability, safety evals, data lineage.</li>
+              <li>Trade-offs: speed vs. governance, openness vs. abuse.</li>
+            </ul>
+            <p><strong>Core sources:</strong> arXiv, NIST, ISO/IEC, CSET.</p>
+          </div>
+
+          <div class="info-item hover-scale" data-topic="geopolitics">
+            <h3>Geopolitics</h3>
+            <p>Security, alliances, sanctions, energy corridors.</p>
+            <ul>
+              <li>Frames: power balance, deterrence, regime type.</li>
+              <li>Levers: trade controls, aid, diplomacy, information.</li>
+              <li>Watchlists: Europe, Indo-Pacific, Middle East.</li>
+            </ul>
+            <p><strong>Core sources:</strong> UN, NATO, trade stats, think tanks.</p>
+          </div>
+
+          <div class="info-item hover-scale" data-topic="health-science">
+            <h3>Health &amp; Science</h3>
+            <p>Evidence hierarchies, trials, population health.</p>
+            <ul>
+              <li>Studies: RCTs, cohort, case-control, meta-analysis.</li>
+              <li>Quality: pre-registration, blinding, effect sizes, bias.</li>
+              <li>Outcomes: mortality, QALYs, adverse events.</li>
+            </ul>
+            <p><strong>Core sources:</strong> WHO, NIH, Cochrane, PubMed.</p>
+          </div>
+
+          <div class="info-item hover-scale" data-topic="climate-energy">
+            <h3>Climate &amp; Energy</h3>
+            <p>Emissions, grids, storage, transition policy.</p>
+            <ul>
+              <li>Scopes: 1 (direct), 2 (electricity), 3 (value chain).</li>
+              <li>Grid needs: firm power, transmission, demand response.</li>
+              <li>Metrics: LCOE, capacity factor, lifecycle intensity.</li>
+            </ul>
+            <p><strong>Core sources:</strong> IPCC, IEA, EIA, national inventories.</p>
+          </div>
+
+          <div class="info-item hover-scale" data-topic="law-policy">
+            <h3>Law &amp; Policy</h3>
+            <p>Rights, courts, governance, implementation.</p>
+            <ul>
+              <li>Levels: constitutional, statutory, regulatory, case law.</li>
+              <li>Cycle: agenda → drafting → comment → enforcement → review.</li>
+              <li>Tests: strict scrutiny, proportionality, administrative record.</li>
+            </ul>
+            <p><strong>Core sources:</strong> registers, court opinions, OECD reviews.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card hover-scale" id="login">
+        <h2>Sign in and onboarding</h2>
+        <p>Select 3 topics → interactive Bias toggles → first vote.</p>
+        <a class="btn btn-ghost hover-scale" href="#">Go to sign in</a>
+      </article>
+
+      <article class="card hover-scale" id="contacts">
+        <h2>Contacts</h2>
+        <p>team@helius.example</p>
+      </article>
+
+      <article class="card hover-scale" id="resources">
+        <h2>Resources</h2>
+        <ul class="bullets">
+          <li>API docs</li>
+          <li>Embed widget</li>
+          <li>Policies and DMCA</li>
+        </ul>
+      </article>
+
+    </aside>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

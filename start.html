@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Start — HELIUS</title>
+  <link rel="stylesheet" href="start.css" />
+  <link rel="icon" type="image/x-icon" href="logo.png" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand hover-scale" aria-label="HELIUS">HELIUS</div>
+    <nav class="site-nav" aria-label="onboarding">
+      <a class="nav-link hover-scale" href="main.html">Back to Home</a>
+    </nav>
+  </header>
+
+  <main class="wizard" aria-live="polite">
+    <!-- Progress -->
+    <ol class="steps">
+      <li class="step is-active" data-step="1">Profile</li>
+      <li class="step" data-step="2">Topics</li>
+      <li class="step" data-step="3">Bias</li>
+      <li class="step" data-step="4">First vote</li>
+      <li class="step" data-step="5">Done</li>
+    </ol>
+
+    <!-- STEP 1: PROFILE -->
+    <section class="panel is-active" data-step="1" aria-labelledby="s1">
+      <h1 id="s1">Tell us about you</h1>
+      <p class="muted">Age and status are required. Everything else is optional and helps recommendations.</p>
+
+      <form id="profileForm" class="form" novalidate>
+        <div class="field">
+          <label for="fullName">Full name</label>
+          <input id="fullName" name="fullName" type="text" placeholder="Alex Johnson" autocomplete="name" />
+        </div>
+
+        <div class="field">
+          <label for="age">Age <span class="req">*</span></label>
+          <input id="age" name="age" type="number" min="13" max="120" inputmode="numeric" required />
+          <small class="hint">Minimum 13.</small>
+        </div>
+
+        <div class="field">
+          <label for="status">Status <span class="req">*</span></label>
+          <select id="status" name="status" required>
+            <option value="" selected hidden>Choose…</option>
+            <option value="student">Student</option>
+            <option value="working">Working</option>
+            <option value="unemployed">Unemployed</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="country">Country / region</label>
+          <input id="country" name="country" type="text" placeholder="Country or region" autocomplete="country-name" />
+        </div>
+
+        <div class="field">
+          <label for="language">Preferred language</label>
+          <select id="language" name="language">
+            <option value="" selected>Auto</option>
+            <option>English</option>
+            <option>Ukrainian</option>
+            <option>Russian</option>
+            <option>German</option>
+            <option>Spanish</option>
+            <option>French</option>
+          </select>
+        </div>
+
+        <div class="field span-2">
+          <label for="goals">Goals</label>
+          <textarea id="goals" name="goals" rows="3" placeholder="What do you want from HELIUS?"></textarea>
+        </div>
+
+        <fieldset class="field span-2">
+          <legend>Interests (optional)</legend>
+          <div class="checks">
+            <label><input type="checkbox" value="research" /> Research</label>
+            <label><input type="checkbox" value="policy" /> Policy</label>
+            <label><input type="checkbox" value="technology" /> Technology</label>
+            <label><input type="checkbox" value="health" /> Health</label>
+            <label><input type="checkbox" value="finance" /> Finance</label>
+            <label><input type="checkbox" value="education" /> Education</label>
+          </div>
+        </fieldset>
+
+        <div class="field span-2">
+          <label for="email">Contact email (optional)</label>
+          <input id="email" name="email" type="email" placeholder="name@example.com" autocomplete="email" />
+        </div>
+
+        <div class="field span-2 compact">
+          <label>
+            <input id="consent" type="checkbox" />
+            I agree to store my onboarding data for personalization.
+          </label>
+        </div>
+      </form>
+    </section>
+
+    <!-- STEP 2: TOPICS -->
+    <section class="panel" data-step="2" aria-labelledby="s2">
+      <h1 id="s2">Pick at least 3 topics</h1>
+      <p class="muted">These shape your personal streams and digest.</p>
+
+      <div class="chips" id="topicChips" role="group" aria-label="Topics">
+        <button class="chip hover-scale" data-topic="Economics">Economics</button>
+        <button class="chip hover-scale" data-topic="Technology">Technology</button>
+        <button class="chip hover-scale" data-topic="Geopolitics">Geopolitics</button>
+        <button class="chip hover-scale" data-topic="Health & Science">Health &amp; Science</button>
+        <button class="chip hover-scale" data-topic="Climate & Energy">Climate &amp; Energy</button>
+        <button class="chip hover-scale" data-topic="Law & Policy">Law &amp; Policy</button>
+        <button class="chip hover-scale" data-topic="Education">Education</button>
+        <button class="chip hover-scale" data-topic="Finance">Finance</button>
+        <button class="chip hover-scale" data-topic="Society & Culture">Society &amp; Culture</button>
+      </div>
+
+      <p class="counter"><span id="pickCount">0</span> selected</p>
+    </section>
+
+    <!-- STEP 3: BIAS -->
+    <section class="panel" data-step="3" aria-labelledby="s3">
+      <h1 id="s3">Set your bias presets</h1>
+      <p class="muted">You can change these anytime. Neutral is 0.</p>
+
+      <div class="sliders">
+        <label class="slider hover-scale">
+          <span>Risk tolerance</span>
+          <input type="range" min="-100" max="100" value="0" step="10" data-bias="risk" />
+          <output>0</output>
+        </label>
+
+        <label class="slider hover-scale">
+          <span>Trust in institutions</span>
+          <input type="range" min="-100" max="100" value="0" step="10" data-bias="trust" />
+          <output>0</output>
+        </label>
+
+        <label class="slider hover-scale">
+          <span>Openness to new evidence</span>
+          <input type="range" min="-100" max="100" value="0" step="10" data-bias="openness" />
+          <output>0</output>
+        </label>
+      </div>
+    </section>
+
+    <!-- STEP 4: FIRST VOTE -->
+    <section class="panel" data-step="4" aria-labelledby="s4">
+      <h1 id="s4">Make your first vote</h1>
+      <p class="muted">Example thesis for onboarding purposes.</p>
+
+      <article class="card hover-scale">
+        <h2>“Open data improves research quality.”</h2>
+        <p class="muted">Consider replication, privacy, misuse risks.</p>
+        <div class="vote">
+          <button class="vote-btn up hover-scale" data-vote="up">Agree ↑</button>
+          <button class="vote-btn down hover-scale" data-vote="down">Disagree ↓</button>
+        </div>
+        <p class="muted small" id="voteStatus">No vote yet.</p>
+      </article>
+    </section>
+
+    <!-- STEP 5: DONE -->
+    <section class="panel" data-step="5" aria-labelledby="s5">
+      <h1 id="s5">You are set</h1>
+      <p class="muted">We saved your profile, topics, bias, and first vote.</p>
+      <a href="main.html" class="btn btn-primary hover-scale">Go to HELIUS</a>
+    </section>
+
+    <!-- Controls -->
+    <footer class="controls">
+      <button id="prevBtn" class="btn hover-scale" disabled>Back</button>
+      <button id="nextBtn" class="btn btn-primary hover-scale" data-state="next" disabled>Next</button>
+    </footer>
+  </main>
+
+  <script src="start.js"></script>
+</body>
+</html>
