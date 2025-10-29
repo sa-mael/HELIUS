@@ -158,3 +158,4 @@ document.addEventListener('keydown', (e)=>{
   if(e.key === 'ArrowRight') { if(!nextBtn.disabled) nextBtn.click(); }
   if(e.key === 'ArrowLeft')  { if(!prevBtn.disabled) prevBtn.click(); }
 });
+
