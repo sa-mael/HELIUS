@@ -5,73 +5,160 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HELIUS — Home</title>
   <link rel="stylesheet" href="home.css" />
-  <link rel="icon" type="image/x-icon" href="logo.png" />
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="brand">HELIUS</div>
-    <nav class="site-nav">
-      <a href="start.html">Onboarding</a>
-      <a href="#" id="logoutBtn">Log out</a>
+  <!-- Glassy background -->
+  <div class="bg"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">HELIUS</div>
+
+    <nav class="side-nav">
+      <h6 class="cap">MENU</h6>
+      <a class="nav-item is-active"><span class="dot"></span>Dashboard</a>
+      <a class="nav-item"><span class="dot"></span>Calendar</a>
+      <a class="nav-item"><span class="dot"></span>My Tasks</a>
+      <a class="nav-item"><span class="dot"></span>Statistics</a>
+      <a class="nav-item"><span class="dot"></span>Documents</a>
+
+      <h6 class="cap">INTEGRATIONS</h6>
+      <a class="nav-item"><span class="dot"></span>Slack</a>
+      <a class="nav-item"><span class="dot"></span>Notion</a>
+      <a class="nav-item"><span class="dot"></span>Add plugin</a>
+
+      <h6 class="cap">TEAMS</h6>
+      <a class="nav-item"><span class="dot"></span>SEO</a>
+      <a class="nav-item"><span class="dot"></span>Marketing</a>
+
+      <a class="nav-item mt-auto"><span class="dot"></span>Settings</a>
     </nav>
+  </aside>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="hello">Hi, <span id="helloName">User</span>!</div>
+    <div class="top-actions">
+      <button class="btn btn-ghost" id="createBtn">+ Create</button>
+      <label class="search">
+        <input type="search" placeholder="Search…" />
+      </label>
+      <button class="btn btn-ghost" id="themeBtn" title="Toggle theme">◑</button>
+      <div class="avatar">👤</div>
+    </div>
   </header>
 
-  <!-- Three-column app layout -->
-  <main class="layout">
-    <!-- LEFT: user column -->
-    <aside class="sidebar">
-      <section class="user-card">
-        <div class="avatar" aria-hidden="true">👤</div>
-        <div>
-          <h2 id="userName">User</h2>
-          <p class="muted" id="userStatus">—</p>
+  <!-- Main grid -->
+  <main class="grid">
+
+    <!-- Overall Information -->
+    <section class="card card-dark overall">
+      <header class="card-head">
+        <h3>Overall Information</h3>
+        <button class="icon-btn">⋮</button>
+      </header>
+      <div class="overall-body">
+        <div class="big">43</div>
+        <div class="muted">Tasks done for all time</div>
+        <div class="muted sep">2 events are stopped</div>
+
+        <div class="overall-stats">
+          <div class="stat">
+            <div class="n">28</div>
+            <div class="m">Projects</div>
+          </div>
+          <div class="stat">
+            <div class="n">14</div>
+            <div class="m">In Progress</div>
+          </div>
+          <div class="stat">
+            <div class="n">11</div>
+            <div class="m">Completed</div>
+          </div>
         </div>
-      </section>
-
-      <section class="progress">
-        <h3>Your progress</h3>
-        <div class="bar">
-          <div class="fill" id="progressFill" style="width:0%"></div>
-        </div>
-        <p class="muted small"><span id="progressText">0</span>% completed</p>
-      </section>
-
-      <section class="notes">
-        <h3>Notes</h3>
-        <form id="noteForm" class="note-form">
-          <input id="noteInput" type="text" placeholder="Write a note…" />
-          <button class="btn" type="submit">Add</button>
-        </form>
-        <ul class="note-list" id="noteList"></ul>
-      </section>
-
-      <section class="settings">
-        <h3>Quick settings</h3>
-        <label class="switch">
-          <input type="checkbox" id="autoTheme" />
-          <span>Auto theme by time</span>
-        </label>
-      </section>
-    </aside>
-
-    <!-- CENTER: topics wheel -->
-    <section class="center">
-      <div class="wheel" id="wheel" aria-label="Topics wheel"></div>
-      <div class="arrow" id="arrow" aria-hidden="true"></div>
+      </div>
     </section>
 
-    <!-- RIGHT: topic detail panel -->
-    <aside class="detail-panel" id="detail">
-      <header class="detail-head">
-        <h2 id="detailTitle">Select a topic</h2>
-        <p class="muted" id="detailKicker">Focus will appear here.</p>
+    <!-- Weekly progress -->
+    <section class="card weekly">
+      <header class="card-head">
+        <h3>Weekly progress</h3>
       </header>
-      <article id="detailBody" class="detail-body">
-        <p>Pick a topic from the wheel to see summary, signals, and starter theses.</p>
-      </article>
-    </aside>
+      <div class="chart" id="lineChart" aria-label="line chart"></div>
+      <footer class="ticks">
+        <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+      </footer>
+    </section>
+
+    <!-- Month progress -->
+    <section class="card month">
+      <header class="card-head">
+        <h3>Month progress</h3>
+      </header>
+      <div class="donut" id="donut" data-value="0.72">
+        <svg viewBox="0 0 36 36" class="donut-svg" aria-hidden="true">
+          <circle class="bg" cx="18" cy="18" r="15.915"></circle>
+          <circle class="val" cx="18" cy="18" r="15.915"></circle>
+        </svg>
+        <div class="donut-label"><span id="donutPct">72%</span></div>
+      </div>
+      <ul class="legend">
+        <li>Sport</li><li>Study</li><li>Project</li>
+      </ul>
+      <button class="btn btn-ghost small">Download Report</button>
+    </section>
+
+    <!-- Month goals -->
+    <section class="card goals">
+      <header class="card-head">
+        <h3>Month goals</h3>
+      </header>
+      <ul class="checks" id="goalList">
+        <li><label><input type="checkbox"> Read 2 books</label></li>
+        <li><label><input type="checkbox"> Sports every day</label></li>
+        <li><label><input type="checkbox"> Complete the course</label></li>
+        <li><label><input type="checkbox"> Bend down with a parachute</label></li>
+      </ul>
+    </section>
+
+    <!-- Tasks in process -->
+    <section class="card tasks">
+      <header class="card-head">
+        <h3>Task in process (2)</h3>
+      </header>
+      <div class="task-grid">
+        <article class="task">
+          <h4>Buy Susan a gift for Birthday</h4>
+          <div class="muted small">Today</div>
+        </article>
+        <article class="task">
+          <h4>Doctor's appointment on Tuesday</h4>
+          <div class="muted small">02.09.2023</div>
+        </article>
+        <button class="task dash" id="addTask">+ Add task</button>
+      </div>
+    </section>
+
+    <!-- Last projects -->
+    <section class="row-head">
+      <h3>Last Projects</h3>
+      <div class="muted small">Sort by · …</div>
+    </section>
+
+    <section class="card project dark">
+      <h4>New Schedule</h4>
+      <p class="muted small">In progress — Define a new plan…</p>
+    </section>
+    <section class="card project">
+      <h4>Prototype animation</h4>
+      <p class="muted small">Completed</p>
+    </section>
+    <section class="card project dark">
+      <h4>AI Project 2 part</h4>
+      <p class="muted small">In progress</p>
+    </section>
+
   </main>
 
   <script src="home.js"></script>

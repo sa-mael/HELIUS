@@ -1,130 +1,66 @@
-// Theme bootstrap from onboarding preference
+// Theme toggle (dark/white only)
 const THEME_KEY = 'helius-theme';
-(function initTheme(){
-  const mode = localStorage.getItem(THEME_KEY) || 'dark';
-  document.documentElement.setAttribute('data-theme',
-    mode === 'auto' ? ((h=> (h>=19||h<7)?'dark':'light')(new Date().getHours())) : mode);
+const themeBtn = document.getElementById('themeBtn');
+function setTheme(mode){
+  document.documentElement.setAttribute('data-theme', mode);
+  localStorage.setItem(THEME_KEY, mode);
+}
+setTheme(localStorage.getItem(THEME_KEY) || 'dark');
+themeBtn.addEventListener('click', ()=>{
+  setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+
+// Greet from onboarding profile
+const profile = JSON.parse(localStorage.getItem('helius-profile') || '{}');
+document.getElementById('helloName').textContent = profile.fullName || 'User';
+
+// Simple SVG line chart without libs
+(function lineChart(){
+  const el = document.getElementById('lineChart');
+  const w = 280, h = 110, pad = 10;
+  const points = [14,22,18,30,26,32,28]; // 7 days, grayscale only
+  const max = Math.max(...points), min = Math.min(...points);
+  const scaleX = (i)=> pad + i*( (w-2*pad)/(points.length-1) );
+  const scaleY = (v)=> h-pad - ( (v-min)/(max-min || 1) ) * (h-2*pad);
+  const path = points.map((v,i)=> (i?'L':'M')+scaleX(i)+','+scaleY(v)).join(' ');
+  el.innerHTML = `
+    <svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">
+      <rect x="0" y="0" width="${w}" height="${h}" rx="12" ry="12" fill="none"/>
+      <path d="${path}" fill="none" stroke="currentColor" stroke-width="2"/>
+      ${points.map((v,i)=>`<circle cx="${scaleX(i)}" cy="${scaleY(v)}" r="3" fill="currentColor"/>`).join('')}
+    </svg>`;
 })();
 
-// Pull onboarding data
-const profile   = JSON.parse(localStorage.getItem('helius-profile') || '{}');
-const topicsLS  = JSON.parse(localStorage.getItem('helius-topics') || 'null');
+// Donut progress (72% by default)
+(function donut(){
+  const wrap = document.getElementById('donut');
+  const pct = Math.round((parseFloat(wrap.dataset.value) || 0)*100);
+  const dash = pct * 100 / 100; // percent in "36 radius circle scale" simplified
+  // 100 length for simplicity; we visually map to 360deg
+  wrap.querySelector('.val').setAttribute('stroke-dasharray', `${dash} ${100-dash}`);
+  document.getElementById('donutPct').textContent = pct + '%';
+})();
 
-// Default topics if none stored
-const ALL_TOPICS = topicsLS && topicsLS.length ? topicsLS : [
-  'Economics','Technology','Geopolitics','Health & Science','Climate & Energy','Law & Policy','Education','Finance'
-];
+// Goals checkbox persistence
+(function goals(){
+  const list = document.getElementById('goalList');
+  const KEY = 'helius-goals';
+  const saved = JSON.parse(localStorage.getItem(KEY) || '[]');
+  Array.from(list.querySelectorAll('input')).forEach((cb,i)=>{
+    cb.checked = !!saved[i];
+    cb.addEventListener('change', ()=>{
+      const arr = Array.from(list.querySelectorAll('input')).map(x=>x.checked);
+      localStorage.setItem(KEY, JSON.stringify(arr));
+    });
+  });
+})();
 
-// User column render
-document.getElementById('userName').textContent = profile.fullName || 'User';
-document.getElementById('userStatus').textContent =
-  (profile.age ? `Age ${profile.age}` : '') + (profile.status ? ` · ${profile.status}` : '');
-
-const autoTheme = document.getElementById('autoTheme');
-autoTheme.checked = (localStorage.getItem(THEME_KEY) === 'auto');
-autoTheme.addEventListener('change', ()=>{
-  localStorage.setItem(THEME_KEY, autoTheme.checked ? 'auto' : 'dark');
-  location.reload();
+// Add task button (placeholder)
+document.getElementById('addTask').addEventListener('click', ()=>{
+  alert('Hook up your task creator here.');
 });
 
-// Notes with localStorage
-const noteForm = document.getElementById('noteForm');
-const noteInput = document.getElementById('noteInput');
-const noteList = document.getElementById('noteList');
-let notes = JSON.parse(localStorage.getItem('helius-notes') || '[]');
-
-function saveNotes(){ localStorage.setItem('helius-notes', JSON.stringify(notes)); }
-function renderNotes(){
-  noteList.innerHTML = '';
-  notes.forEach((t,i)=>{
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${t}</span>`;
-    const del = document.createElement('button'); del.textContent = '×';
-    del.addEventListener('click', ()=>{ notes.splice(i,1); saveNotes(); renderNotes(); });
-    li.appendChild(del); noteList.appendChild(li);
-  });
-}
-noteForm.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  const v = noteInput.value.trim(); if(!v) return;
-  notes.push(v); noteInput.value = ''; saveNotes(); renderNotes();
-});
-renderNotes();
-
-// Progress = share of topics opened in this session
-let opened = new Set();
-function updateProgress(){
-  const pct = Math.round((opened.size / ALL_TOPICS.length) * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressText').textContent = String(pct);
-}
-
-// Wheel rendering
-const wheel = document.getElementById('wheel');
-const center = document.querySelector('.center');
-const arrow = document.getElementById('arrow');
-const detail = document.getElementById('detail');
-const detailTitle = document.getElementById('detailTitle');
-const detailKicker = document.getElementById('detailKicker');
-const detailBody = document.getElementById('detailBody');
-
-let selected = null;
-
-function placeTopics(){
-  wheel.innerHTML = '';
-  const N = ALL_TOPICS.length;
-  const r = wheel.clientWidth/2 - 34;   // radius minus item offset
-
-  ALL_TOPICS.forEach((name, idx)=>{
-    const angle = (idx / N) * Math.PI*2 - Math.PI/2; // start at top
-    const x = r * Math.cos(angle);
-    const y = r * Math.sin(angle);
-
-    const btn = document.createElement('button');
-    btn.className = 'topic';
-    btn.textContent = name;
-    btn.style.transform = `translate(${x}px, ${y}px)`;   // first position
-    // then shift to center using CSS var
-    btn.style.left = '50%'; btn.style.top = '50%';
-    btn.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-
-    btn.addEventListener('click', ()=>selectTopic(name, btn));
-    wheel.appendChild(btn);
-  });
-  // Reselect if possible
-  if(selected){
-    const btn = Array.from(wheel.children).find(b=>b.textContent===selected);
-    if(btn) btn.click();
-  }
-}
-
-function selectTopic(name, btn){
-  selected = name;
-  center.classList.add('dim','show-arrow');
-  document.body.classList.add('focus-detail');
-
-  Array.from(wheel.children).forEach(el=>el.classList.toggle('selected', el===btn));
-
-  // Arrow is already pointing right; just show it
-  // Detail content
-  opened.add(name); updateProgress();
-  detailTitle.textContent = name;
-  detailKicker.textContent = 'Focused view. Other elements are dimmed.';
-  detailBody.innerHTML = `
-    <div class="card"><strong>Summary:</strong> curated theses, versions, counter-arguments.</div>
-    <div class="card"><strong>Signals:</strong> new sources, revisions, author activity.</div>
-    <div class="card"><strong>Starter theses:</strong> examples to explore inside this topic.</div>
-  `;
-}
-
-// Resize handler to keep polar positions responsive
-window.addEventListener('resize', placeTopics);
-placeTopics();
-
-// Logout simulation
-document.getElementById('logoutBtn').addEventListener('click', (e)=>{
-  e.preventDefault();
-  localStorage.removeItem('helius-onboarded');
-  // In a real app you would also revoke the session token here.
-  window.location.href = 'start.html';
+// Create button (placeholder)
+document.getElementById('createBtn').addEventListener('click', ()=>{
+  alert('Attach creation modal here.');
 });

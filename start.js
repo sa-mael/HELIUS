@@ -138,7 +138,7 @@ nextBtn.addEventListener('click', async ()=>{
     /* ================== NAVIGATION (GO TO HOME / MAIN PAGE) =================
        After the AI finishes initialization, redirect to the main app.
     ======================================================================== */
-    window.location.href = 'main.html';
+    window.location.href = 'home.html';
     return;
   }
   setStep(stepIndex + 1);
