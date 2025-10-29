@@ -138,7 +138,7 @@ nextBtn.addEventListener('click', async ()=>{
     /* ================== NAVIGATION (GO TO HOME / MAIN PAGE) =================
        After the AI finishes initialization, redirect to the main app.
     ======================================================================== */
-    window.location.href = 'main.html';
+    window.location.href = 'home.html';
     return;
   }
   setStep(stepIndex + 1);
@@ -158,3 +158,4 @@ document.addEventListener('keydown', (e)=>{
   if(e.key === 'ArrowRight') { if(!nextBtn.disabled) nextBtn.click(); }
   if(e.key === 'ArrowLeft')  { if(!prevBtn.disabled) prevBtn.click(); }
 });
+
