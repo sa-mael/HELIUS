@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HELIUS Docs — Metaphysics</title>
+  <link rel="stylesheet" href="meta.css" />
+</head>
+<body>
+
+  <!-- Floating back button: always visible -->
+  <button class="back-fab" id="backBtn" aria-label="Go back">← Back</button>
+
+  <!-- Left sidebar -->
+  <aside class="sidebar" aria-label="Primary">
+    <div class="brand">HELIUS</div>
+
+    <nav class="side-nav">
+      <h6 class="cap">Get started</h6>
+      <a class="nav-item is-active" href="#top">Quick start</a>
+
+      <h6 class="cap">Guides</h6>
+      <a class="nav-item" href="#what-is">What is metaphysics</a>
+      <a class="nav-item" href="#core-qs">Core questions</a>
+      <a class="nav-item" href="#subfields">Subfields</a>
+      <a class="nav-item" href="#methods">Methods</a>
+      <a class="nav-item" href="#relations">Relations to science</a>
+      <a class="nav-item" href="#critiques">Critiques & limits</a>
+      <a class="nav-item" href="#roadmap">Study roadmap</a>
+      <a class="nav-item" href="#faqs">FAQs</a>
+
+      <div class="grow"></div>
+      <a class="nav-item" href="home.html">Home</a>
+    </nav>
+  </aside>
+
+  <!-- Top bar -->
+  <header class="topbar" role="banner">
+    <nav class="tabs" aria-label="Top">
+      <a class="tab is-active" href="#">Docs</a>
+      <a class="tab" href="#">Components</a>
+      <a class="tab" href="#">Guidelines</a>
+      <a class="tab" href="#">Playground</a>
+    </nav>
+
+    <div class="top-actions">
+      <label class="search">
+        <input type="search" placeholder="Search docs…" aria-label="Search" />
+      </label>
+      <button class="btn-ghost" id="themeToggle" title="Toggle theme">◑</button>
+      <a class="btn" href="#">Contribute</a>
+    </div>
+  </header>
+
+  <!-- Main 2-column doc layout -->
+  <main class="doc-grid" id="top">
+    <!-- Center column -->
+    <article class="doc">
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-img" aria-hidden="true"></div>
+        <div class="hero-text">
+          <h1>Metaphysics</h1>
+          <p>Concise guide to the study of what there is, how it is, and why it matters.</p>
+        </div>
+      </section>
+
+      <!-- Quick start -->
+      <section class="block" id="quick">
+        <h2>Quick start</h2>
+        <ol>
+          <li>Read <a href="#what-is">what metaphysics studies</a> and why it is distinct from physics or theology.</li>
+          <li>Scan <a href="#core-qs">the core questions</a> to map the territory.</li>
+          <li>Pick one <a href="#subfields">subfield</a> and work through one classic text plus one modern summary.</li>
+        </ol>
+        <p class="muted small">Time: 90–120 minutes for a first pass.</p>
+      </section>
+
+      <!-- What is metaphysics -->
+      <section class="block" id="what-is">
+        <h2>What is metaphysics</h2>
+        <p><strong>Metaphysics</strong> is the branch of philosophy that studies the most general features of reality:
+          what exists, what it is like, and how different kinds of things relate. It asks questions that sit “behind”
+          the sciences and everyday claims, clarifying the categories we use to describe the world.</p>
+        <ul>
+          <li><em>Ontology:</em> inventory of what exists and the structure of being.</li>
+          <li><em>Modality:</em> possibility, necessity, and laws.</li>
+          <li><em>Identity and change:</em> what makes something the same over time.</li>
+          <li><em>Causation and explanation:</em> dependence, powers, and why things happen.</li>
+          <li><em>Space and time:</em> their reality and relation to objects and events.</li>
+          <li><em>Mind and matter:</em> how consciousness fits into the world.</li>
+        </ul>
+      </section>
+
+      <!-- Core questions -->
+      <section class="block" id="core-qs">
+        <h2>Core questions</h2>
+        <ul class="two-col">
+          <li>What kinds of things are fundamental?</li>
+          <li>Are numbers, properties, or universals real?</li>
+          <li>What is a law of nature?</li>
+          <li>Could the world have been otherwise?</li>
+          <li>What is personal identity across time?</li>
+          <li>Do causes produce effects or merely correlate?</li>
+          <li>Is time tensed (past/present/future) or tenseless?</li>
+          <li>How does mind relate to brain?</li>
+        </ul>
+      </section>
+
+      <!-- Subfields -->
+      <section class="block" id="subfields">
+        <h2>Subfields</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Ontology</h3>
+            <p>Categories of being, mereology (parts/wholes), realism vs. nominalism.</p>
+          </div>
+          <div class="card">
+            <h3>Modality</h3>
+            <p>Possible worlds, essence, necessity, counterfactuals.</p>
+          </div>
+          <div class="card">
+            <h3>Identity & change</h3>
+            <p>Persistence, four-dimensionalism vs. endurantism, ship of Theseus.</p>
+          </div>
+          <div class="card">
+            <h3>Causation</h3>
+            <p>Regularity, counterfactual, and powers accounts; causal graphs.</p>
+          </div>
+          <div class="card">
+            <h3>Space & time</h3>
+            <p>Substantivalism vs. relationism; presentism vs. eternalism.</p>
+          </div>
+          <div class="card">
+            <h3>Mind & world</h3>
+            <p>Dualism, physicalism, panpsychism; grounding of consciousness.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Methods -->
+      <section class="block" id="methods">
+        <h2>Methods</h2>
+        <ul>
+          <li><strong>Conceptual analysis:</strong> clarify terms and infer commitments.</li>
+          <li><strong>Thought experiments:</strong> test intuitions under controlled variation.</li>
+          <li><strong>Formal tools:</strong> modal logic, set theory, graph models of dependence.</li>
+          <li><strong>Inference to best explanation:</strong> compare theory cost vs. explanatory power.</li>
+          <li><strong>Cross-checks:</strong> coherence with science and with ordinary language.</li>
+        </ul>
+      </section>
+
+      <!-- Relations -->
+      <section class="block" id="relations">
+        <h2>Relations to science</h2>
+        <p>Metaphysics is not empirical science but interacts with it by
+          <em>interpreting</em> scientific results and proposing frameworks
+          within which results make sense. Physics informs debates on time,
+          cosmology, and laws; cognitive science informs debates on mind.</p>
+      </section>
+
+      <!-- Critiques -->
+      <section class="block" id="critiques">
+        <h2>Critiques & limits</h2>
+        <ul>
+          <li><strong>Verificationism:</strong> claims without testable consequences are meaningless.</li>
+          <li><strong>Quinean critique:</strong> ontology should follow our best science.</li>
+          <li><strong>Method worries:</strong> heavy reliance on intuitions can mislead.</li>
+        </ul>
+        <p class="muted small">Good practice: state assumptions, mark uncertainty, and show dependency graph of claims.</p>
+      </section>
+
+      <!-- Roadmap -->
+      <section class="block" id="roadmap">
+        <h2>Study roadmap</h2>
+        <ol>
+          <li><strong>Primer:</strong> SEP or IEP article on Metaphysics.</li>
+          <li><strong>Classic:</strong> Aristotle <em>Metaphysics</em> (selections) or Descartes <em>Meditations</em>.</li>
+          <li><strong>Modern:</strong> van Inwagen <em>Metaphysics</em>, Lowe <em>A Survey of Metaphysics</em>.</li>
+          <li><strong>Method:</strong> Williamson <em>The Philosophy of Philosophy</em> chs. on methodology.</li>
+          <li><strong>Project:</strong> pick one subfield and build a one-page thesis card with sources.</li>
+        </ol>
+      </section>
+
+      <!-- FAQs -->
+      <section class="block" id="faqs">
+        <h2>FAQs</h2>
+        <details>
+          <summary>Is metaphysics obsolete after modern physics?</summary>
+          <p>No. Physics answers empirical questions; metaphysics clarifies categories and assumptions in which those answers live.</p>
+        </details>
+        <details>
+          <summary>Isn’t it just speculation?</summary>
+          <p>Bad metaphysics is. Good work states assumptions, argues from costs/benefits, and respects science.</p>
+        </details>
+      </section>
+
+    </article>
+
+    <!-- Right sticky ToC -->
+    <aside class="toc" aria-label="On this page">
+      <div class="toc-box">
+        <h4>On this page</h4>
+        <nav id="tocList">
+          <!-- populated by JS -->
+        </nav>
+      </div>
+
+      <div class="help-box">
+        <button class="btn-ghost w100">Ask our Docs</button>
+      </div>
+    </aside>
+  </main>
+
+  <script src="meta.js"></script>
+</body>
+</html>
