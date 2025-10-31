@@ -159,3 +159,16 @@ document.addEventListener('keydown', (e)=>{
   if(e.key === 'ArrowLeft')  { if(!prevBtn.disabled) prevBtn.click(); }
 });
 
+// in start.js after rendering topic chips
+const next = document.getElementById('nextBtn');
+function gate(){
+  const picked = [...document.querySelectorAll('[data-topic].is-selected')].length;
+  next.disabled = picked < 3;
+}
+document.addEventListener('click', e=>{
+  if(e.target.closest('[data-topic]')){ e.target.closest('[data-topic]').classList.toggle('is-selected'); gate(); }
+});
+gate();
+// End of start.js
+
+// Back button  
