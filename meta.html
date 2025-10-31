@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <!-- Floating back button: always visible -->
+  <!-- Always-visible Back -->
   <button class="back-fab" id="backBtn" aria-label="Go back">← Back</button>
 
   <!-- Left sidebar -->
@@ -30,7 +30,8 @@
       <a class="nav-item" href="#faqs">FAQs</a>
 
       <div class="grow"></div>
-      <a class="nav-item" href="home.html">Home</a>
+      <!-- Exit to the main page (training/logout) -->
+      <a class="nav-item exit" href="index.html">Exit to Home</a>
     </nav>
   </aside>
 
@@ -44,24 +45,38 @@
     </nav>
 
     <div class="top-actions">
-      <label class="search">
-        <input type="search" placeholder="Search docs…" aria-label="Search" />
+      <label class="search" aria-label="Search">
+        <input type="search" placeholder="Search docs…" />
       </label>
       <button class="btn-ghost" id="themeToggle" title="Toggle theme">◑</button>
+
+      <!-- User menu (always in top bar) -->
+      <div class="user">
+        <button class="avatar-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false" title="User menu">U</button>
+        <div class="menu" id="userMenu" role="menu">
+          <a href="#" role="menuitem">Profile</a>
+          <a href="#" role="menuitem">Settings</a>
+          <a href="index.html" role="menuitem">Sign out</a>
+        </div>
+      </div>
+
       <a class="btn" href="#">Contribute</a>
     </div>
   </header>
 
-  <!-- Main 2-column doc layout -->
+  <!-- Main two-column doc layout -->
   <main class="doc-grid" id="top">
     <!-- Center column -->
     <article class="doc">
+      <!-- Subtle background quote (barely visible) -->
+      <div class="watermark" aria-hidden="true">“The map is not the territory.”</div>
 
       <!-- Hero -->
       <section class="hero">
         <div class="hero-img" aria-hidden="true"></div>
         <div class="hero-text">
-          <h1>Metaphysics</h1>
+          <!-- Larger, centered title -->
+          <h1 class="title">Metaphysics</h1>
           <p>Concise guide to the study of what there is, how it is, and why it matters.</p>
         </div>
       </section>
@@ -75,16 +90,16 @@
           <li>Pick one <a href="#subfields">subfield</a> and work through one classic text plus one modern summary.</li>
         </ol>
         <p class="muted small">Time: 90–120 minutes for a first pass.</p>
+        <!-- Self-test opener -->
+        <button class="btn test-btn" id="openQuizBtn">Test yourself →</button>
       </section>
 
       <!-- What is metaphysics -->
-      <section class="block" id="what-is">
+      <section class="block readable" id="what-is">
         <h2>What is metaphysics</h2>
-        <p><strong>Metaphysics</strong> is the branch of philosophy that studies the most general features of reality:
-          what exists, what it is like, and how different kinds of things relate. It asks questions that sit “behind”
-          the sciences and everyday claims, clarifying the categories we use to describe the world.</p>
+        <p><strong>Metaphysics</strong> studies the most general features of reality: what exists, what it is like, and how kinds of things relate. It clarifies categories behind science and everyday claims.</p>
         <ul>
-          <li><em>Ontology:</em> inventory of what exists and the structure of being.</li>
+          <li><em>Ontology:</em> what exists and the structure of being.</li>
           <li><em>Modality:</em> possibility, necessity, and laws.</li>
           <li><em>Identity and change:</em> what makes something the same over time.</li>
           <li><em>Causation and explanation:</em> dependence, powers, and why things happen.</li>
@@ -94,124 +109,102 @@
       </section>
 
       <!-- Core questions -->
-      <section class="block" id="core-qs">
+      <section class="block readable" id="core-qs">
         <h2>Core questions</h2>
-        <ul class="two-col">
+        <ul class="two-col" id="coreList">
           <li>What kinds of things are fundamental?</li>
           <li>Are numbers, properties, or universals real?</li>
           <li>What is a law of nature?</li>
           <li>Could the world have been otherwise?</li>
           <li>What is personal identity across time?</li>
           <li>Do causes produce effects or merely correlate?</li>
-          <li>Is time tensed (past/present/future) or tenseless?</li>
+          <li>Is time tensed or tenseless?</li>
           <li>How does mind relate to brain?</li>
         </ul>
       </section>
 
       <!-- Subfields -->
-      <section class="block" id="subfields">
+      <section class="block readable" id="subfields">
         <h2>Subfields</h2>
         <div class="cards">
-          <div class="card">
-            <h3>Ontology</h3>
-            <p>Categories of being, mereology (parts/wholes), realism vs. nominalism.</p>
-          </div>
-          <div class="card">
-            <h3>Modality</h3>
-            <p>Possible worlds, essence, necessity, counterfactuals.</p>
-          </div>
-          <div class="card">
-            <h3>Identity & change</h3>
-            <p>Persistence, four-dimensionalism vs. endurantism, ship of Theseus.</p>
-          </div>
-          <div class="card">
-            <h3>Causation</h3>
-            <p>Regularity, counterfactual, and powers accounts; causal graphs.</p>
-          </div>
-          <div class="card">
-            <h3>Space & time</h3>
-            <p>Substantivalism vs. relationism; presentism vs. eternalism.</p>
-          </div>
-          <div class="card">
-            <h3>Mind & world</h3>
-            <p>Dualism, physicalism, panpsychism; grounding of consciousness.</p>
-          </div>
+          <div class="card"><h3>Ontology</h3><p>Categories of being, mereology, realism vs. nominalism.</p></div>
+          <div class="card"><h3>Modality</h3><p>Possible worlds, essence, counterfactuals.</p></div>
+          <div class="card"><h3>Identity & change</h3><p>Persistence, endurantism vs. perdurantism.</p></div>
+          <div class="card"><h3>Causation</h3><p>Regularity, counterfactual, powers; causal graphs.</p></div>
+          <div class="card"><h3>Space & time</h3><p>Substantivalism vs. relationism; presentism vs. eternalism.</p></div>
+          <div class="card"><h3>Mind & world</h3><p>Dualism, physicalism, panpsychism.</p></div>
         </div>
       </section>
 
-      <!-- Methods -->
-      <section class="block" id="methods">
+      <section class="block readable" id="methods">
         <h2>Methods</h2>
         <ul>
-          <li><strong>Conceptual analysis:</strong> clarify terms and infer commitments.</li>
-          <li><strong>Thought experiments:</strong> test intuitions under controlled variation.</li>
-          <li><strong>Formal tools:</strong> modal logic, set theory, graph models of dependence.</li>
-          <li><strong>Inference to best explanation:</strong> compare theory cost vs. explanatory power.</li>
-          <li><strong>Cross-checks:</strong> coherence with science and with ordinary language.</li>
+          <li><strong>Conceptual analysis:</strong> clarify terms and commitments.</li>
+          <li><strong>Thought experiments:</strong> test intuitions under variation.</li>
+          <li><strong>Formal tools:</strong> modal logic, sets, dependence models.</li>
+          <li><strong>Inference to best explanation:</strong> weigh cost vs. power.</li>
+          <li><strong>Cross-checks:</strong> coherence with science and language.</li>
         </ul>
       </section>
 
-      <!-- Relations -->
-      <section class="block" id="relations">
+      <section class="block readable" id="relations">
         <h2>Relations to science</h2>
-        <p>Metaphysics is not empirical science but interacts with it by
-          <em>interpreting</em> scientific results and proposing frameworks
-          within which results make sense. Physics informs debates on time,
-          cosmology, and laws; cognitive science informs debates on mind.</p>
+        <p>Metaphysics interprets and organizes scientific results rather than duplicating them.</p>
       </section>
 
-      <!-- Critiques -->
-      <section class="block" id="critiques">
+      <section class="block readable" id="critiques">
         <h2>Critiques & limits</h2>
         <ul>
-          <li><strong>Verificationism:</strong> claims without testable consequences are meaningless.</li>
-          <li><strong>Quinean critique:</strong> ontology should follow our best science.</li>
-          <li><strong>Method worries:</strong> heavy reliance on intuitions can mislead.</li>
+          <li><strong>Verificationism:</strong> non-testable claims risk meaninglessness.</li>
+          <li><strong>Quine:</strong> ontology should follow best science.</li>
+          <li><strong>Method:</strong> unchecked intuitions mislead.</li>
         </ul>
-        <p class="muted small">Good practice: state assumptions, mark uncertainty, and show dependency graph of claims.</p>
       </section>
 
-      <!-- Roadmap -->
-      <section class="block" id="roadmap">
+      <section class="block readable" id="roadmap">
         <h2>Study roadmap</h2>
         <ol>
-          <li><strong>Primer:</strong> SEP or IEP article on Metaphysics.</li>
-          <li><strong>Classic:</strong> Aristotle <em>Metaphysics</em> (selections) or Descartes <em>Meditations</em>.</li>
-          <li><strong>Modern:</strong> van Inwagen <em>Metaphysics</em>, Lowe <em>A Survey of Metaphysics</em>.</li>
-          <li><strong>Method:</strong> Williamson <em>The Philosophy of Philosophy</em> chs. on methodology.</li>
-          <li><strong>Project:</strong> pick one subfield and build a one-page thesis card with sources.</li>
+          <li>Primer: SEP/IEP article.</li>
+          <li>Classic: Aristotle or Descartes (selected).</li>
+          <li>Modern: van Inwagen; Lowe.</li>
+          <li>Method: Williamson on methodology.</li>
+          <li>Project: one thesis card with sources.</li>
         </ol>
       </section>
 
-      <!-- FAQs -->
-      <section class="block" id="faqs">
+      <section class="block readable" id="faqs">
         <h2>FAQs</h2>
-        <details>
-          <summary>Is metaphysics obsolete after modern physics?</summary>
-          <p>No. Physics answers empirical questions; metaphysics clarifies categories and assumptions in which those answers live.</p>
-        </details>
-        <details>
-          <summary>Isn’t it just speculation?</summary>
-          <p>Bad metaphysics is. Good work states assumptions, argues from costs/benefits, and respects science.</p>
-        </details>
+        <details><summary>Is metaphysics obsolete after modern physics?</summary><p>No. Physics is empirical; metaphysics clarifies categories.</p></details>
+        <details><summary>Isn’t it just speculation?</summary><p>Good work states assumptions, argues, and respects science.</p></details>
       </section>
-
     </article>
 
-    <!-- Right sticky ToC -->
+    <!-- Right sticky ToC (moved in, clearer text) -->
     <aside class="toc" aria-label="On this page">
       <div class="toc-box">
         <h4>On this page</h4>
-        <nav id="tocList">
-          <!-- populated by JS -->
-        </nav>
+        <nav id="tocList"></nav>
       </div>
-
       <div class="help-box">
         <button class="btn-ghost w100">Ask our Docs</button>
       </div>
     </aside>
   </main>
+
+  <!-- Self-test modal -->
+  <div class="modal" id="quizModal" aria-hidden="true">
+    <div class="overlay" id="quizOverlay"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+      <header class="modal-head">
+        <h3 id="quizTitle">Self-test</h3>
+        <button class="icon-btn" id="quizClose" aria-label="Close">×</button>
+      </header>
+      <div class="modal-body" id="quizBody"></div>
+      <footer class="modal-foot">
+        <button class="btn-ghost" id="quizCancel">Close</button>
+      </footer>
+    </div>
+  </div>
 
   <script src="meta.js"></script>
 </body>
