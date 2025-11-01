@@ -74,3 +74,55 @@ openQuizBtn.addEventListener('click', openQuiz);
 quizOverlay.addEventListener('click', closeQuiz);
 quizClose.addEventListener('click', closeQuiz);
 quizCancel.addEventListener('click', closeQuiz);
+/* ------- Left menu actions ------- */
+const menu = document.getElementById('app-menu');
+const pop = document.getElementById('notes-popover');
+const notesBtn = menu.querySelector('[data-action="notes"]');
+const statusEl = document.getElementById('notes-status');
+const noteKey = 'meta-quick-note';
+
+// Open notes popover
+notesBtn.addEventListener('click', ()=>{
+  const open = pop.getAttribute('aria-hidden') === 'false';
+  pop.setAttribute('aria-hidden', open ? 'true' : 'false');
+  notesBtn.setAttribute('aria-expanded', open ? 'false' : 'true');
+  if(!open){ document.getElementById('notes-text').value = localStorage.getItem(noteKey) || ''; }
+});
+
+// Save note
+document.getElementById('notes-form').addEventListener('submit', e=>{
+  e.preventDefault();
+  const v = document.getElementById('notes-text').value.trim();
+  localStorage.setItem(noteKey, v);
+  statusEl.textContent = 'Saved.';
+});
+
+// Close popover
+menu.querySelector('[data-close-notes]').addEventListener('click', ()=>{
+  pop.setAttribute('aria-hidden','true'); notesBtn.setAttribute('aria-expanded','false');
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){ pop.setAttribute('aria-hidden','true'); notesBtn.setAttribute('aria-expanded','false'); }
+});
+document.addEventListener('click', e=>{
+  if(!pop.contains(e.target) && !notesBtn.contains(e.target)){
+    pop.setAttribute('aria-hidden','true'); notesBtn.setAttribute('aria-expanded','false');
+  }
+});
+
+// Navigation + utilities
+menu.addEventListener('click', e=>{
+  const btn = e.target.closest('.menu-item'); if(!btn) return;
+  const act = btn.dataset.action;
+
+  if(act === 'home'){ location.href = 'home.html'; }
+  if(act === 'user'){ location.href = 'start.html#profile'; }
+  if(act === 'settings'){ document.getElementById('themeToggle')?.click(); }
+  if(act === 'analytics'){ location.hash = '#relations'; }
+  if(act === 'add-friend'){ alert('Friend system: integrate backend here.'); }
+  if(act === 'logout'){
+    localStorage.removeItem('helius-onboarded');
+    // optionally clear other keys
+    location.href = 'start.html';
+  }
+});

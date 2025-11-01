@@ -27,19 +27,50 @@ body{
 }
 
 /* Sidebar */
-.sidebar{
-  position:fixed; inset:16px auto 16px 16px; width:260px; z-index:20;
+/* Left app menu (replaces the old .sidebar) */
+.menu-card{
+  position:fixed; inset:16px auto 16px 16px; width:248px; z-index:20;
   background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow);
-  padding:14px; display:flex; flex-direction:column; gap:8px;
+  padding:12px; display:flex; flex-direction:column;
 }
-.brand{ font-weight:900; letter-spacing:.22em; font-size:1.9rem; text-align:center; margin-bottom:6px; }
-.cap{ color:var(--muted); font-size:.72rem; letter-spacing:.12em; margin:8px 6px 4px; }
-.side-nav{ display:flex; flex-direction:column; gap:2px; height:100% }
-.nav-item{ padding:10px 12px; border-radius:10px; color:var(--fg); text-decoration:none; }
-.nav-item:hover{ background:rgba(255,255,255,.04) }
-.nav-item.is-active{ background:rgba(255,255,255,.08) }
-.exit{ border:1px solid var(--line); text-align:center; margin-top:6px }
-.grow{ flex:1 }
+.menu{ display:flex; flex-direction:column; gap:6px }
+.menu-item{
+  display:flex; align-items:center; gap:10px;
+  padding:10px; border-radius:12px; border:1px solid transparent;
+  color:var(--fg); background:transparent; cursor:pointer;
+  transition:background .15s ease, transform .15s ease, border-color .15s ease;
+}
+.menu-item:hover{ background:rgba(255,255,255,.04) }
+.menu-item:active{ transform:scale(.98) }
+.menu-item.danger{ border-color:#2b2b2b }
+.menu-item .icon{ width:24px; height:24px; display:grid; place-items:center }
+.menu-item .label{ font-weight:600 }
+
+/* Notes popover */
+.notes-popover{
+  position:absolute; left:264px; top:12px; width:280px;
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow);
+  padding:10px; display:none;
+}
+.notes-popover[aria-hidden="false"]{ display:block }
+#notes-form textarea{
+  width:100%; resize:vertical; min-height:110px; padding:10px;
+  border:1px solid var(--line); border-radius:10px; background:transparent; color:var(--fg);
+}
+.notes-actions{ display:flex; gap:8px; margin-top:8px }
+.btn{ border:1px solid var(--line); background:transparent; color:var(--fg); padding:8px 12px; border-radius:10px; cursor:pointer }
+.btn.primary{ border-color:var(--ink) }
+.notes-hint{ margin:6px 0 0; color:var(--muted) }
+
+/* Shift doc layout to the right to make space for menu */
+.doc-grid{ margin-left:280px } /* keep other margins as-is */
+
+/* Small screens: hide menu */
+@media (max-width:860px){
+  .menu-card{ transform:translateX(-270px) }
+  .doc-grid{ margin-left:16px }
+}
+
 
 /* Top bar */
 .topbar{
@@ -104,7 +135,12 @@ body{
   filter:saturate(0%) contrast(110%);
 }
 .hero-text{ padding:14px 16px 16px }
-.title{ font-size:clamp(2.2rem,4.8vw,3.2rem); letter-spacing:.1em }  /* no text-align */
+.title{ font-size:clamp(2.2rem,2.8vw,3.2rem);
+   letter-spacing:.1em;
+    margin:0 0 6px
+   }
+  
+  /* no text-align */
 
 /* Blocks */
 .block{

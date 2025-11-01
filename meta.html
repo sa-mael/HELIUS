@@ -12,28 +12,83 @@
   <button class="back-fab" id="backBtn" aria-label="Go back">← Back</button>
 
   <!-- Left sidebar -->
-  <aside class="sidebar" aria-label="Primary">
+  < class="sidebar" aria-label="Primary">
     <div class="brand">HELIUS</div>
 
-    <nav class="side-nav">
-      <h6 class="cap">Get started</h6>
-      <a class="nav-item is-active" href="#top">Quick start</a>
+    <aside class="menu-card" id="app-menu" aria-label="Main menu">
+  <nav class="menu" role="menu">
+    <!-- 1. Profile -->
+    <button class="menu-item" role="menuitem" data-action="user" aria-label="Profile">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-5 0-9 2.5-9 5.5A1.5 1.5 0 0 0 4.5 21h15A1.5 1.5 0 0 0 21 19.5C21 16.5 17 14 12 14Z"/></svg>
+      </span>
+      <span class="label">Profile</span>
+    </button>
 
-      <h6 class="cap">Guides</h6>
-      <a class="nav-item" href="#what-is">What is metaphysics</a>
-      <a class="nav-item" href="#core-qs">Core questions</a>
-      <a class="nav-item" href="#subfields">Subfields</a>
-      <a class="nav-item" href="#methods">Methods</a>
-      <a class="nav-item" href="#relations">Relations to science</a>
-      <a class="nav-item" href="#critiques">Critiques & limits</a>
-      <a class="nav-item" href="#roadmap">Study roadmap</a>
-      <a class="nav-item" href="#faqs">FAQs</a>
+    <!-- 2. Home -->
+    <button class="menu-item" role="menuitem" data-action="home" aria-label="Home">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 3 2 11h3v9h6v-6h2v6h6v-9h3Z"/></svg>
+      </span>
+      <span class="label">Home</span>
+    </button>
 
-      <div class="grow"></div>
-      <!-- Exit to the main page (training/logout) -->
-      <a class="nav-item exit" href="index.html">Exit to Home</a>
-    </nav>
-  </aside>
+    <!-- 3. Add note -->
+    <button class="menu-item" role="menuitem" data-action="notes"
+            aria-haspopup="dialog" aria-controls="notes-popover" aria-expanded="false">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 0v6h6M8 14h8M8 18h6M8 10h4"/></svg>
+      </span>
+      <span class="label">Add note</span>
+    </button>
+
+    <!-- 4. Analytics -->
+    <button class="menu-item" role="menuitem" data-action="analytics" aria-label="Analytics">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 21h18M7 17V9m5 8V5m5 12v-6"/></svg>
+      </span>
+      <span class="label">Analytics</span>
+    </button>
+
+    <!-- 5. Add friend -->
+    <button class="menu-item" role="menuitem" data-action="add-friend" aria-label="Add friend">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 8a4 4 0 1 0-4 4 4 4 0 0 0 4-4Zm-9 9c0-2.761 3.239-5 7-5m6-6v4m2-2h-4"/></svg>
+      </span>
+      <span class="label">Add friend</span>
+    </button>
+
+    <!-- 6. Settings -->
+    <button class="menu-item" role="menuitem" data-action="settings" aria-label="Settings">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 15.5A3.5 3.5 0 1 1 15.5 12 3.5 3.5 0 0 1 12 15.5Zm8.94-2.5a8 8 0 0 0 .06-1 8 8 0 0 0-.06-1l2.06-1.6a.5.5 0 0 0 .12-.65l-2-3.46a.5.5 0 0 0-.6-.22l-2.43 1a7.93 7.93 0 0 0-1.73-1l-.37-2.6A.5.5 0 0 0 13.5 1h-4a.5.5 0 0 0-.5.42l-.37 2.6a7.93 7.93 0 0 0-1.73 1l-2.43-1a.5.5 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.65L2.94 11a8 8 0 0 0-.06 1 8 8 0 0 0 .06 1l-2.06 1.6a.5.5 0 0 0-.12.65l2 3.46a.5.5 0 0 0 .6.22l2.43-1a7.93 7.93 0 0 0 1.73 1l.37 2.6a.5.5 0 0 0 .5.42h4a.5.5 0 0 0 .5-.42l.37-2.6a7.93 7.93 0 0 0 1.73-1l2.43 1a.5.5 0 0 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.65Z"/></svg>
+      </span>
+      <span class="label">Settings</span>
+    </button>
+
+    <!-- 7. Sign out -->
+    <button class="menu-item danger" role="menuitem" data-action="logout" aria-label="Sign out">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M10 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m5 14 5-5-5-5m5 5H9"/></svg>
+      </span>
+      <span class="label">Sign out</span>
+    </button>
+  </nav>
+
+  <!-- Mini notes popover -->
+  <div id="notes-popover" class="notes-popover" role="dialog"
+       aria-modal="false" aria-hidden="true" aria-label="Quick notes">
+    <form id="notes-form">
+      <textarea id="notes-text" rows="5" placeholder="Your note..."></textarea>
+      <div class="notes-actions">
+        <button type="submit" class="btn primary">Save</button>
+        <button type="button" class="btn" data-close-notes>Close</button>
+      </div>
+      <p class="notes-hint" id="notes-status" aria-live="polite"></p>
+    </form>
+  </div>
+</aside>
+
 
   <!-- Top bar -->
   <header class="topbar" role="banner">
