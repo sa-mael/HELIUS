@@ -74,6 +74,7 @@ openQuizBtn.addEventListener('click', openQuiz);
 quizOverlay.addEventListener('click', closeQuiz);
 quizClose.addEventListener('click', closeQuiz);
 quizCancel.addEventListener('click', closeQuiz);
+
 /* ------- Left menu actions ------- */
 const menu = document.getElementById('app-menu');
 const pop = document.getElementById('notes-popover');
@@ -126,3 +127,51 @@ menu.addEventListener('click', e=>{
     location.href = 'start.html';
   }
 });
+(function(){
+  const menu=document.getElementById('app-menu'); if(!menu) return;
+  const notesBtn=menu.querySelector('[data-action="notes"]');
+  const pop=document.getElementById('notes-popover');
+  const form=document.getElementById('notes-form');
+  const text=document.getElementById('notes-text');
+  const status=document.getElementById('notes-status');
+
+  const routes={
+    user:()=>location.href='start.html',
+    home:()=>location.href='home.html',
+    analytics:()=>location.href='#core-qs',
+    'add-friend':()=>alert('Invite dialog hook'),
+    settings:()=>location.href='home.html#settings',
+    logout:()=>{localStorage.removeItem('helius-onboarded');location.href='start.html';}
+  };
+
+  menu.addEventListener('click',e=>{
+    const b=e.target.closest('.menu-item'); if(!b) return;
+    const a=b.dataset.action;
+    if(a==='notes') return toggleNotes(b);
+    routes[a]?.();
+  });
+
+  function toggleNotes(anchor){
+    const open=notesBtn.getAttribute('aria-expanded')==='true';
+    if(open) return closeNotes();
+    const r=anchor.getBoundingClientRect();
+    pop.style.left=Math.round(r.right+12)+'px';
+    pop.style.top=Math.round(r.top)+'px';
+    notesBtn.setAttribute('aria-expanded','true');
+    pop.setAttribute('aria-hidden','false');
+    text.value=localStorage.getItem('helius-quick-note')||'';
+    text.focus();
+  }
+  function closeNotes(){
+    notesBtn.setAttribute('aria-expanded','false');
+    pop.setAttribute('aria-hidden','true');
+  }
+  pop.querySelector('[data-close-notes]').addEventListener('click',closeNotes);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeNotes(); });
+
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    localStorage.setItem('helius-quick-note',text.value.trim());
+    status.textContent='Saved.'; setTimeout(()=>{status.textContent='';closeNotes();},600);
+  });
+})();
