@@ -7,15 +7,9 @@
   <link rel="stylesheet" href="meta.css" />
 </head>
 <body>
-
-  <!-- Always-visible Back -->
-  <button class="back-fab" id="backBtn" aria-label="Go back">← Back</button>
-
   <!-- Left sidebar -->
-  < class="sidebar" aria-label="Primary">
-    <div class="brand">HELIUS</div>
-
- <aside class="menu-card" id="app-menu" aria-label="Main menu">
+  <aside class="menu-card" id="app-menu" aria-label="Main menu">
+     <div class="brand">HELIUS</div>
   <nav class="menu" role="menu">
     <!-- 1. Profile -->
     <button class="menu-item" role="menuitem" data-action="user" aria-label="Profile">
@@ -74,19 +68,6 @@
       <span class="label">Sign out</span>
     </button>
   </nav>
-
-  <!-- Mini notes popover -->
-  <div id="notes-popover" class="notes-popover" role="dialog"
-       aria-modal="false" aria-hidden="true" aria-label="Quick notes">
-    <form id="notes-form">
-      <textarea id="notes-text" rows="5" placeholder="Your note..."></textarea>
-      <div class="notes-actions">
-        <button type="submit" class="btn primary">Save</button>
-        <button type="button" class="btn" data-close-notes>Close</button>
-      </div>
-      <p class="notes-hint" id="notes-status" aria-live="polite"></p>
-    </form>
-  </div>
 </aside>
 
 
