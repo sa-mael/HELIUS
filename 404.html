@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>404 — HELIUS</title>
+  <meta name="description" content="HELIUS — page not found" />
+  <style>
+    /* Strict grayscale theme */
+    html { color-scheme: light dark; }
+    html[data-theme="light"]{
+      --bg:#ffffff; --fg:#141414; --muted:#7a7a7a; --line:#e7e7e7;
+      --panel:#f7f7f7; --panel2:#efefef; --ink:#000000; --shadow:0 10px 30px rgba(0,0,0,.08);
+    }
+    html[data-theme="dark"]{
+      --bg:#0b0b0b; --fg:#e9e9e9; --muted:#9f9f9f; --line:#1b1b1b;
+      --panel:#111111; --panel2:#0e0e0e; --ink:#ffffff; --shadow:0 10px 30px rgba(0,0,0,.32);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+
+    /* Subtle background */
+    .bg{
+      position:fixed; inset:0; pointer-events:none;
+      background:
+        radial-gradient(60vmax 60vmax at 10% 20%, rgba(255,255,255,.06), transparent 60%),
+        radial-gradient(60vmax 60vmax at 90% 30%, rgba(255,255,255,.05), transparent 60%),
+        radial-gradient(60vmax 60vmax at 50% 100%, rgba(255,255,255,.06), transparent 60%);
+      filter:blur(18px) saturate(0%);
+    }
+
+    /* Layout */
+    .wrap{
+      min-height:100%;
+      display:grid; place-items:center; padding:24px;
+    }
+    .card{
+      width:min(760px, 92vw);
+      border:1px solid var(--line); border-radius:16px; background:var(--panel);
+      box-shadow:var(--shadow); padding:18px;
+    }
+    .row{
+      display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start;
+    }
+    .title{ font-size:2.2rem; font-weight:900; letter-spacing:.04em; margin:6px 0 2px }
+    .kicker{ color:var(--muted); margin:0 0 12px }
+    .badpath{
+      padding:10px 12px; border:1px dashed var(--line); border-radius:10px; background:var(--panel2);
+      font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      word-break:break-all;
+    }
+
+    /* Actions */
+    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px }
+    .btn{
+      border:1px solid var(--line); background:transparent; color:var(--fg);
+      padding:10px 14px; border-radius:10px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+      transition:transform .25s ease;
+    }
+    .btn:hover{ transform:translateY(-1px) }
+    .btn.primary{ border-color:var(--ink) }
+
+    /* Countdown */
+    .muted{ color:var(--muted) }
+    .small{ font-size:.92rem }
+
+    /* Persistent Back button */
+    .back-fab{
+      position:fixed; left:18px; bottom:18px; z-index:50;
+      border:1px solid var(--line); background:var(--panel2); color:var(--fg);
+      padding:10px 14px; border-radius:999px; cursor:pointer; box-shadow:var(--shadow);
+    }
+
+    @media (max-width:560px){
+      .row{ grid-template-columns:1fr }
+      .title{ font-size:1.8rem }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <!-- Always-visible Back -->
+  <button class="back-fab" id="backBtn" aria-label="Go back">← Back</button>
+
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="h404">
+      <div class="row">
+        <div>
+          <h1 id="h404" class="title">404 — Page not found</h1>
+          <p class="kicker">The requested path does not exist on this site.</p>
+        </div>
+        <div class="muted small" id="countWrap">Auto-redirect in <span id="count">8</span>s</div>
+      </div>
+
+      <div class="badpath" id="badPath" aria-live="polite">/</div>
+
+      <div class="actions">
+        <a class="btn primary" href="index.html">Go to Home</a>
+        <a class="btn" href="start.html">Start onboarding</a>
+        <a class="btn" href="meta.html">Open Docs</a>
+        <button class="btn" id="stayBtn" type="button">Stay here</button>
+        <button class="btn" id="copyBtn" type="button">Copy path</button>
+      </div>
+
+      <p class="muted small" style="margin-top:10px">
+        Tip: check the URL for typos or use the links above.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    // Theme from localStorage (dark/white only)
+    (function(){
+      const KEY='helius-theme';
+      const m=localStorage.getItem(KEY)||'dark';
+      document.documentElement.setAttribute('data-theme', m);
+    })();
+
+    // Back button
+    document.getElementById('backBtn').addEventListener('click', ()=>{
+      if(history.length>1) history.back(); else location.href='index.html';
+    });
+
+    // Show the broken path
+    const bad = location.pathname + location.search + location.hash;
+    document.getElementById('badPath').textContent = bad || '/';
+
+    // Countdown redirect to Home
+    let t = 25, timerId = null;
+    const countEl = document.getElementById('count');
+    const wrapEl = document.getElementById('countWrap');
+    function tick(){
+      countEl.textContent = String(t);
+      if(t<=0){ location.href='index.html'; return; }
+      t--; timerId = setTimeout(tick, 1000);
+    }
+    timerId = setTimeout(tick, 1000);
+
+    // “Stay here” cancels redirect
+    document.getElementById('stayBtn').addEventListener('click', ()=>{
+      if(timerId) clearTimeout(timerId);
+      wrapEl.textContent = 'Auto-redirect canceled';
+    });
+
+    // Copy path button
+    document.getElementById('copyBtn').addEventListener('click', async ()=>{
+      try{
+        await navigator.clipboard.writeText(bad || '/');
+        alert('Path copied.');
+      }catch(e){ alert('Copy failed.'); }
+    });
+  </script>
+</body>
+</html>

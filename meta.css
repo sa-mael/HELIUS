@@ -86,10 +86,10 @@ a{ color:var(--ink); text-decoration:none }
    ========================= */
 .doc-grid{
   /* Centered "box" that adapts by device width */
-  width:min(1400px, 100% - 48px);
+  width:min(1980px, 100% - 48px);
   margin:96px auto 18px; /* 96px clears fixed header */
   display:grid;
-  grid-template-columns: 248px 1fr 320px; /* menu / info / guide */
+  grid-template-columns: 200px 1fr 320px; /* menu / info / guide */
   gap:20px;
   align-items:start;
 }
@@ -126,7 +126,7 @@ a{ color:var(--ink); text-decoration:none }
   display:grid; grid-template-columns:1fr;
 }
 .hero-img{
-  height:180px; background-image:url('helius.png');
+  height:180px; background-image:url('hero.png');
   background-size:cover; background-position:center; filter:saturate(0%) contrast(110%);
 }
 .hero-text{ padding:14px 16px 16px }
@@ -177,7 +177,7 @@ a{ color:var(--ink); text-decoration:none }
 .modal.show{ display:block }
 .overlay{ position:absolute; inset:0; background:rgba(0,0,0,.5) }
 .modal-card{
-  position:absolute; right:32px; top:96px; width:min(540px, calc(100% - 64px));
+  position:absolute; right:40vw; top:96px; width:min(540px, calc(100% - 64px));
   background:var(--panel); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);
 }
 .modal-head{ display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--line) }
