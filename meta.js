@@ -1,177 +1,270 @@
-// Theme toggle (dark/white only)
-const THEME_KEY = 'helius-theme';
-const themeToggle = document.getElementById('themeToggle');
-function setTheme(mode){
-  document.documentElement.setAttribute('data-theme', mode);
-  localStorage.setItem(THEME_KEY, mode);
-}
-setTheme(localStorage.getItem(THEME_KEY) || 'dark');
-themeToggle.addEventListener('click', ()=>{
-  setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
+/* meta.js */
+(() => {
+  "use strict";
 
-// Back button
-document.getElementById('backBtn').addEventListener('click', ()=>{
-  if (history.length > 1) history.back();
-  else location.href = 'index.html';
-});
+  // ===== Utilities
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
 
-// User menu
-const userBtn  = document.getElementById('userBtn');
-const userMenu = document.getElementById('userMenu');
-userBtn.addEventListener('click', (e)=>{
-  e.stopPropagation();
-  const open = userMenu.classList.toggle('show');
-  userBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-});
-document.addEventListener('click', ()=> userMenu.classList.remove('show'));
+  // ===== Theme toggle
+  const html = document.documentElement;
+  const themeBtn = $("#themeToggle");
 
-// Build ToC and scrollspy
-const headings = Array.from(document.querySelectorAll('.doc h2'));
-const tocList = document.getElementById('tocList');
-const links = headings.map(h => {
-  const id = h.id || h.textContent.toLowerCase().replace(/\s+/g,'-').replace(/[^\w-]/g,'');
-  h.id = id;
-  const a = document.createElement('a');
-  a.href = `#${id}`; a.textContent = h.textContent;
-  tocList.appendChild(a);
-  return a;
-});
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      links.forEach(l => l.classList.toggle('active', l.hash === `#${e.target.id}`));
-      document.querySelectorAll('.side-nav .nav-item').forEach(n=>{
-        n.classList.toggle('is-active', n.getAttribute('href') === `#${e.target.id}`);
+  function getSystemTheme() {
+    return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function applyTheme(t) {
+    html.setAttribute("data-theme", t);
+    if (themeBtn) themeBtn.setAttribute("aria-pressed", String(t === "dark"));
+    localStorage.setItem("theme", t);
+  }
+  function initTheme() {
+    const saved = localStorage.getItem("theme");
+    const current = saved || html.getAttribute("data-theme") || getSystemTheme();
+    applyTheme(current);
+  }
+  on(themeBtn, "click", () => {
+    const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    applyTheme(next);
+  });
+
+  // ===== User menu
+  const userBtn = $("#userBtn");
+  const userMenu = $("#userMenu");
+  function closeUserMenu() {
+    if (!userMenu) return;
+    userMenu.hidden = true;
+    userBtn?.setAttribute("aria-expanded", "false");
+  }
+  function toggleUserMenu() {
+    if (!userMenu) return;
+    const open = userMenu.hidden;
+    userMenu.hidden = !open;
+    userBtn?.setAttribute("aria-expanded", String(open));
+    if (open) userMenu.querySelector("a")?.focus();
+  }
+  on(userBtn, "click", (e) => { e.stopPropagation(); toggleUserMenu(); });
+  on(document, "click", (e) => {
+    if (!userMenu || userMenu.hidden) return;
+    if (e.target instanceof Node && !userMenu.contains(e.target) && e.target !== userBtn) closeUserMenu();
+  });
+  on(document, "keydown", (e) => { if (e.key === "Escape") closeUserMenu(); });
+
+  // ===== Left menu actions (only what's present)
+  $$(".menu-item[data-action]").forEach(btn => {
+    on(btn, "click", () => {
+      const a = btn.getAttribute("data-action");
+      if (a === "home") { window.location.href = "index.html"; }
+      if (a === "notes") {
+        const pop = $(".notes-popover");
+        if (pop) {
+          const open = pop.getAttribute("aria-hidden") === "false";
+          pop.setAttribute("aria-hidden", open ? "true" : "false");
+          if (!open) pop.querySelector("textarea,button,[href],input,select")?.focus();
+        }
+      }
+    });
+  });
+
+  // ===== Floating back button
+  function ensureBackFab() {
+    if ($(".back-fab")) return;
+    const b = document.createElement("button");
+    b.className = "back-fab";
+    b.type = "button";
+    b.setAttribute("aria-label", "Go back");
+    b.textContent = "← Back";
+    on(b, "click", () => {
+      if (history.length > 1) history.back();
+      else window.location.href = "index.html";
+    });
+    document.body.appendChild(b);
+  }
+
+  // ===== Build ToC + Scrollspy
+  const tocList = $("#tocList");
+  function buildToc() {
+    if (!tocList) return;
+    const roots = $("article.doc") || document;
+    const heads = $$("h2[id], h3[id]", roots);
+    tocList.innerHTML = "";
+    const ul = document.createElement("ul");
+    ul.setAttribute("role", "list");
+    heads.forEach(h => {
+      const id = h.id;
+      if (!id) return;
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = `#${id}`;
+      a.textContent = h.textContent?.trim() || id;
+      a.dataset.target = id;
+      if (h.tagName === "H3") li.style.paddingLeft = "12px";
+      on(a, "click", (e) => {
+        e.preventDefault();
+        const target = document.getElementById(id);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        setActiveToc(id);
       });
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    tocList.appendChild(ul);
+  }
+  function setActiveToc(id) {
+    $$(`#tocList a`).forEach(a => {
+      const active = a.dataset.target === id;
+      a.classList.toggle("active", active);
+      a.setAttribute("aria-current", active ? "true" : "false");
+    });
+  }
+  function initScrollSpy() {
+    const roots = $("article.doc") || document;
+    const heads = $$("h2[id], h3[id]", roots);
+    if (!heads.length) return;
+    const io = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      const top = visible[0] || entries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (top?.target?.id) setActiveToc(top.target.id);
+    }, { rootMargin: "-40% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] });
+    heads.forEach(h => io.observe(h));
+  }
+
+  // ===== Self-test modal with inline quiz
+  const modal = $("#quizModal");
+  const overlay = $("#quizOverlay");
+  const openQuizBtn = $("#openQuizBtn");
+  const closeBtn = $("#quizClose");
+  const cancelBtn = $("#quizCancel");
+  const quizBody = $("#quizBody");
+
+  const QUIZ = [
+    {
+      q: "Which cause explains what a thing is essentially?",
+      opts: ["Material", "Formal", "Efficient", "Final"],
+      a: 1
+    },
+    {
+      q: "Change as actuality of what is potential defines:",
+      opts: ["Generation", "Alteration", "Motion", "Change in general"],
+      a: 3
+    },
+    {
+      q: "For Aristotle, primary reality lies in:",
+      opts: ["Universals", "Propositions", "Individual substances", "Numbers"],
+      a: 2
+    },
+    {
+      q: "Time is:",
+      opts: ["Independent of change", "Number of motion regarding before/after", "Purely subjective", "Identical to space"],
+      a: 1
+    },
+    {
+      q: "The unmoved mover is chiefly a:",
+      opts: ["Pushing efficient cause", "Material cause", "Final cause", "Formal cause only"],
+      a: 2
     }
-  });
-},{ rootMargin:'-40% 0px -50% 0px', threshold:0.01 });
-headings.forEach(h=>observer.observe(h));
+  ];
 
-// Self-test modal based on “Core questions”
-const openQuizBtn = document.getElementById('openQuizBtn');
-const quizModal   = document.getElementById('quizModal');
-const quizOverlay = document.getElementById('quizOverlay');
-const quizClose   = document.getElementById('quizClose');
-const quizCancel  = document.getElementById('quizCancel');
-const quizBody    = document.getElementById('quizBody');
+  function renderQuiz() {
+    if (!quizBody) return;
+    quizBody.innerHTML = "";
+    const form = document.createElement("form");
+    form.id = "quizForm";
+    QUIZ.forEach((item, i) => {
+      const fs = document.createElement("fieldset");
+      const lg = document.createElement("legend");
+      lg.textContent = `${i + 1}. ${item.q}`;
+      fs.appendChild(lg);
+      item.opts.forEach((opt, j) => {
+        const id = `q${i}o${j}`;
+        const label = document.createElement("label");
+        label.setAttribute("for", id);
+        label.style.display = "block";
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = `q${i}`;
+        input.value = String(j);
+        input.id = id;
+        label.appendChild(input);
+        label.append(` ${opt}`);
+        fs.appendChild(label);
+      });
+      form.appendChild(fs);
+    });
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.justifyContent = "flex-end";
+    actions.style.gap = "8px";
 
-function openQuiz(){
-  const items = Array.from(document.querySelectorAll('#coreList li')).map(li => li.textContent.trim());
-  quizBody.innerHTML = `<ol class="checklist">${items.map(t=>`
-      <li><label><input type="checkbox"> ${t}</label></li>`).join('')}
-    </ol>
-    <p class="muted small">Tick items you can answer out loud. Close to return.</p>`;
-  quizModal.classList.add('show');
-  quizModal.setAttribute('aria-hidden','false');
-}
-function closeQuiz(){
-  quizModal.classList.remove('show');
-  quizModal.setAttribute('aria-hidden','true');
-}
-openQuizBtn.addEventListener('click', openQuiz);
-quizOverlay.addEventListener('click', closeQuiz);
-quizClose.addEventListener('click', closeQuiz);
-quizCancel.addEventListener('click', closeQuiz);
+    const checkBtn = document.createElement("button");
+    checkBtn.type = "button";
+    checkBtn.className = "btn";
+    checkBtn.textContent = "Check answers";
+    on(checkBtn, "click", () => {
+      const data = new FormData(form);
+      let score = 0;
+      QUIZ.forEach((item, i) => {
+        const pick = Number(data.get(`q${i}`));
+        if (pick === item.a) score++;
+      });
+      const note = document.createElement("p");
+      note.textContent = `Score: ${score} / ${QUIZ.length}`;
+      note.setAttribute("aria-live", "polite");
+      quizBody.appendChild(note);
+    });
 
-/* ------- Left menu actions ------- */
-const menu = document.getElementById('app-menu');
-const pop = document.getElementById('notes-popover');
-const notesBtn = menu.querySelector('[data-action="notes"]');
-const statusEl = document.getElementById('notes-status');
-const noteKey = 'meta-quick-note';
-
-// Open notes popover
-notesBtn.addEventListener('click', ()=>{
-  const open = pop.getAttribute('aria-hidden') === 'false';
-  pop.setAttribute('aria-hidden', open ? 'true' : 'false');
-  notesBtn.setAttribute('aria-expanded', open ? 'false' : 'true');
-  if(!open){ document.getElementById('notes-text').value = localStorage.getItem(noteKey) || ''; }
-});
-
-// Save note
-document.getElementById('notes-form').addEventListener('submit', e=>{
-  e.preventDefault();
-  const v = document.getElementById('notes-text').value.trim();
-  localStorage.setItem(noteKey, v);
-  statusEl.textContent = 'Saved.';
-});
-
-// Close popover
-menu.querySelector('[data-close-notes]').addEventListener('click', ()=>{
-  pop.setAttribute('aria-hidden','true'); notesBtn.setAttribute('aria-expanded','false');
-});
-document.addEventListener('keydown', e=>{
-  if(e.key === 'Escape'){ pop.setAttribute('aria-hidden','true'); notesBtn.setAttribute('aria-expanded','false'); }
-});
-document.addEventListener('click', e=>{
-  if(!pop.contains(e.target) && !notesBtn.contains(e.target)){
-    pop.setAttribute('aria-hidden','true'); notesBtn.setAttribute('aria-expanded','false');
+    actions.appendChild(checkBtn);
+    form.appendChild(actions);
+    quizBody.appendChild(form);
   }
-});
-
-// Navigation + utilities
-menu.addEventListener('click', e=>{
-  const btn = e.target.closest('.menu-item'); if(!btn) return;
-  const act = btn.dataset.action;
-
-  if(act === 'home'){ location.href = 'home.html'; }
-  if(act === 'user'){ location.href = 'start.html#profile'; }
-  if(act === 'settings'){ document.getElementById('themeToggle')?.click(); }
-  if(act === 'analytics'){ location.hash = '#relations'; }
-  if(act === 'add-friend'){ alert('Friend system: integrate backend here.'); }
-  if(act === 'logout'){
-    localStorage.removeItem('helius-onboarded');
-    // optionally clear other keys
-    location.href = 'start.html';
+  function openModal() {
+    if (!modal) return;
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    closeUserMenu();
+    renderQuiz();
+    closeBtn?.focus();
   }
-});
-(function(){
-  const menu=document.getElementById('app-menu'); if(!menu) return;
-  const notesBtn=menu.querySelector('[data-action="notes"]');
-  const pop=document.getElementById('notes-popover');
-  const form=document.getElementById('notes-form');
-  const text=document.getElementById('notes-text');
-  const status=document.getElementById('notes-status');
-
-  const routes={
-    user:()=>location.href='start.html',
-    home:()=>location.href='home.html',
-    analytics:()=>location.href='#core-qs',
-    'add-friend':()=>alert('Invite dialog hook'),
-    settings:()=>location.href='home.html#settings',
-    logout:()=>{localStorage.removeItem('helius-onboarded');location.href='start.html';}
-  };
-
-  menu.addEventListener('click',e=>{
-    const b=e.target.closest('.menu-item'); if(!b) return;
-    const a=b.dataset.action;
-    if(a==='notes') return toggleNotes(b);
-    routes[a]?.();
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+  }
+  on(openQuizBtn, "click", openModal);
+  on(closeBtn, "click", closeModal);
+  on(cancelBtn, "click", closeModal);
+  on(overlay, "click", closeModal);
+  on(document, "keydown", (e) => {
+    if (e.key === "Escape" && modal?.classList.contains("show")) closeModal();
   });
 
-  function toggleNotes(anchor){
-    const open=notesBtn.getAttribute('aria-expanded')==='true';
-    if(open) return closeNotes();
-    const r=anchor.getBoundingClientRect();
-    pop.style.left=Math.round(r.right+12)+'px';
-    pop.style.top=Math.round(r.top)+'px';
-    notesBtn.setAttribute('aria-expanded','true');
-    pop.setAttribute('aria-hidden','false');
-    text.value=localStorage.getItem('helius-quick-note')||'';
-    text.focus();
-  }
-  function closeNotes(){
-    notesBtn.setAttribute('aria-expanded','false');
-    pop.setAttribute('aria-hidden','true');
-  }
-  pop.querySelector('[data-close-notes]').addEventListener('click',closeNotes);
-  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeNotes(); });
+  // ===== “Ask our Docs” → focus search
+  on($(".help-box .btn-ghost"), "click", () => {
+    const s = $(".search input");
+    if (s) { s.focus(); s.select(); }
+  });
 
-  form.addEventListener('submit',e=>{
-    e.preventDefault();
-    localStorage.setItem('helius-quick-note',text.value.trim());
-    status.textContent='Saved.'; setTimeout(()=>{status.textContent='';closeNotes();},600);
+  // ===== Smooth internal anchor behavior for all in-doc links
+  $$('a[href^="#"]').forEach(a => {
+    on(a, "click", (e) => {
+      const id = a.getAttribute("href")?.slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.replaceState(null, "", `#${id}`);
+    });
+  });
+
+  // ===== Init
+  document.addEventListener("DOMContentLoaded", () => {
+    initTheme();
+    ensureBackFab();
+    buildToc();
+    initScrollSpy();
   });
 })();
