@@ -1,420 +1,289 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HELIUS Docs — Metaphysics</title>
-  <link rel="stylesheet" href="meta.css" />
+  <title>HELIUS — living handbook</title>
+  <link rel="stylesheet" href="main.css" />
   <link rel="icon" type="image/x-icon" href="logo.png" />
 </head>
 <body>
 
-  <div class="grid-container-full">
-    <!-- Top bar -->
-    <header class="topbar" role="banner">
-      <div class="logo">
-        <a href="index.html" aria-label="HELIUS home">
-          <span class="logo-img" aria-hidden="true"></span>
-          <span class="logo-text">HELIUS</span>
-        </a>
+  <!-- Header: brand left, centered menu, theme switch right -->
+  <header class="site-header">
+    <div class="brand hover-scale" aria-label="HELIUS">HELIUS</div>
+
+    <nav class="site-nav" aria-label="main">
+      <!-- Interface in English; comments in English -->
+      <a class="nav-link hover-scale" href="#about">About</a>
+      <a class="nav-link hover-scale" href="#topics">Topics</a>
+      <a class="nav-link hover-scale" href="meta.html">Docs</a>
+      <a class="btn btn-primary hover-scale" id="startBtn" href="start.html">Start</a>
+    </nav>
+
+    <div class="theme-switch" role="group" aria-label="Theme">
+      <button class="theme-btn" data-theme="dark" aria-pressed="true">Dark</button>
+      <button class="theme-btn" data-theme="light">Light</button>
+      <button class="theme-btn" data-theme="auto">Auto</button>
+    </div>
+  </header>
+
+  <!-- Two-column layout: left video (33%), right information (67%) -->
+  <main class="layout">
+    <!-- Left: compact boxed video (~20% of viewport min dimension) -->
+    <section class="pane pane-left">
+      <div class="video-wrap hover-scale">
+        <!-- Replace with your media files -->
+        <video class="hero-video" controls  autoplay muted loop playsinline preload="auto"
+               poster="hilus.jpg" disablepictureinpicture
+               controlslist="nodownload noplaybackrate noremoteplayback nofullscreen">
+          <source src="0001-0210.mp4" type="video/mp4" />
+          <source src="0001-0210.webm" type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
-      <nav class="tabs" aria-label="Top navigation">
-        <a class="tab is-active" href="#" aria-current="page">Docs</a>
-        <a class="tab" href="#">Components</a>
-        <a class="tab" href="#">Guidelines</a>
-        <a class="tab" href="#">Playground</a>
-      </nav>
+      <!-- Optional quick anchors -->
+      <ul class="quick-links">
+        <li><a class="hover-scale" href="#about">About</a></li>
+        <li><a class="hover-scale" href="#contacts">Contacts</a></li>
+        <li><a class="hover-scale" href="#resources">Resources</a></li>
+      </ul>
+    </section>
 
-      <div class="top-actions">
-        <label class="search">
-          <span class="sr-only">Search docs</span>
-          <input type="search" placeholder="Search docs…" aria-label="Search docs" />
-        </label>
+    <!-- Right: information column with rich blocks -->
+    <aside class="pane pane-right" id="info" tabindex="-1" aria-label="Information column">
 
-        <button class="btn-ghost" id="themeToggle" type="button" title="Toggle theme" aria-pressed="false">◑</button>
+      <!-- KPI row -->
+      <section class="kpi-row">
+        <div class="kpi hover-scale"><strong>20</strong><span>Anchor theses</span></div>
+        <div class="kpi hover-scale"><strong>120+</strong><span>Linked sources</span></div>
+        <div class="kpi hover-scale"><strong>15</strong><span>Contributors</span></div>
+        <div class="kpi hover-scale"><strong>300+</strong><span>Revisions</span></div>
+      </section>
 
-        <!-- User menu -->
-        <div class="user">
-          <button
-            class="avatar-btn"
-            id="userBtn"
-            type="button"
-            aria-haspopup="menu"
-            aria-expanded="false"
-            aria-controls="userMenu"
-            title="User menu"
-          >
-            U
-          </button>
-          <div class="menu" id="userMenu" role="menu" hidden>
-            <a href="#" role="menuitem">Profile</a>
-            <a href="#" role="menuitem">Settings</a>
-            <a href="index.html" role="menuitem">Sign out</a>
-          </div>
-        </div>
+      <!-- Topic chips -->
+      <section class="chips">
+        <a href="#topics" class="chip hover-scale">Economics</a>
+        <a href="#topics" class="chip hover-scale">Technology</a>
+        <a href="#topics" class="chip hover-scale">Geopolitics</a>
+        <a href="#topics" class="chip hover-scale">Health & Science</a>
+        <a href="#topics" class="chip hover-scale">Climate & Energy</a>
+        <a href="#topics" class="chip hover-scale">Law & Policy</a>
+      </section>
 
-        <a class="btn" href="#">Contribute</a>
-      </div>
-    </header>
+      <!-- Short roadmap -->
+      <section class="card hover-scale">
+        <h2>Roadmap</h2>
+        <ul class="timeline">
+          <li><time>Month 1</time> MVP with 20 theses, versions, votes, export.</li>
+          <li><time>Month 2</time> Creator drafts, private team spaces, basic API.</li>
+          <li><time>Month 3</time> Briefings, campus workshops, partner newsletters.</li>
+        </ul>
+      </section>
 
-    <!-- Main layout -->
-    <main class="doc-grid" id="main">
-      <!-- Left menu -->
-      <aside class="menu-card" id="app-menu" aria-label="Main menu">
-        <nav class="menu" role="menu">
-          <!-- 1. Profile -->
-          <button class="menu-item" role="menuitem" data-action="user" aria-label="Profile">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-5 0-9 2.5-9 5.5A1.5 1.5 0 0 0 4.5 21h15A1.5 1.5 0 0 0 21 19.5C21 16.5 17 14 12 14Z"/>
-              </svg>
-            </span>
-            <span class="label">Profile</span>
-          </button>
+      <!-- About -->
+      <article class="card hover-scale" id="about">
+        <h2>About us</h2>
+        <p>HELIUS is a living handbook of changing truth. We help people form positions fast with clear arguments, risks, and verifiable sources.</p>
 
-          <!-- 2. Home -->
-          <button class="menu-item" role="menuitem" data-action="home" aria-label="Home">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M12 3 2 11h3v9h6v-6h2v6h6v-9h3Z"/>
-              </svg>
-            </span>
-            <span class="label">Home</span>
-          </button>
+        <h3>What we do</h3>
+        <ul class="bullets">
+          <li>Capture theses as cards with tabs: <em>Summary · Versions · Sources · Discuss</em>.</li>
+          <li>Link theses into an ontology: support, refutation, dependency.</li>
+          <li>Show dynamics over time with a time-scrubber across versions.</li>
+          <li>Provide thinking tools: Bias toggles, What-if scenarios, voting.</li>
+          <li>Score impact with confidence labels and author reputation.</li>
+          <li>Export to PDF/PNG with correct citations; offer API and embeds.</li>
+        </ul>
 
-          <!-- 3. Add note -->
-          <button
-            class="menu-item"
-            role="menuitem"
-            data-action="notes"
-            aria-haspopup="dialog"
-            aria-expanded="false"
-          >
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 0v6h6M8 14h8M8 18h6M8 10h4"/>
-              </svg>
-            </span>
-            <span class="label">Add note</span>
-          </button>
+        <h3>Who it's for</h3>
+        <ul class="bullets">
+          <li>Individuals: students, creators, content analysts.</li>
+          <li>Teams: newsrooms, research groups, nonprofits, product teams.</li>
+          <li>Education &amp; think tanks: critical-thinking courses, seminars, debates.</li>
+        </ul>
 
-          <!-- 4. Analytics -->
-          <button class="menu-item" role="menuitem" data-action="analytics" aria-label="Analytics">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M3 21h18M7 17V9m5 8V5m5 12v-6"/>
-              </svg>
-            </span>
-            <span class="label">Analytics</span>
-          </button>
+        <h3>How it works</h3>
+        <ol class="bullets">
+          <li>Select topics and subscribe to streams.</li>
+          <li>Open a thesis card to see summary, versions, sources, and discussion.</li>
+          <li>Toggle biases, scrub time, and run “what-if” checks.</li>
+          <li>Vote, save, and share a cited thesis card.</li>
+        </ol>
 
-          <!-- 5. Add friend -->
-          <button class="menu-item" role="menuitem" data-action="add-friend" aria-label="Add friend">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M15 8a4 4 0 1 0-4 4 4 4 0 0 0 4-4Zm-9 9c0-2.761 3.239-5 7-5m6-6v4m2-2h-4"/>
-              </svg>
-            </span>
-            <span class="label">Add friend</span>
-          </button>
+        <h3>Our story</h3>
+        <ul class="bullets">
+          <li><strong>Origin:</strong> a debate club drowning in links. We split arguments into thesis cards and it worked.</li>
+          <li><strong>MVP:</strong> 20 theses, public diffs, voting, export. First users were lecturers and editors.</li>
+          <li><strong>Growth:</strong> ontology links, confidence labels, private team spaces, API and embed widget.</li>
+          <li><strong>Now:</strong> building a versioned thesis base with open change history and author reputation.</li>
+        </ul>
 
-          <!-- 6. Settings -->
-          <button class="menu-item" role="menuitem" data-action="settings" aria-label="Settings">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M12 15.5A3.5 3.5 0 1 1 15.5 12 3.5 3.5 0 0 1 12 15.5Zm8.94-2.5a8 8 0 0 0 .06-1 8 8 0 0 0-.06-1l2.06-1.6a.5.5 0 0 0 .12-.65l-2-3.46a.5.5 0 0 0-.6-.22l-2.43 1a7.93 7.93 0 0 0-1.73-1l-.37-2.6A.5.5 0 0 0 13.5 1h-4a.5.5 0 0 0-.5.42l-.37 2.6a7.93 7.93 0 0 0-1.73 1l-2.43-1a.5.5 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.65L2.94 11a8 8 0 0 0-.06 1 8 8 0 0 0 .06 1l-2.06 1.6a.5.5 0 0 0-.12.65l2 3.46a.5.5 0 0 0 .6.22l2.43-1a7.93 7.93 0 0 0 1.73 1l.37 2.6a.5.5 0 0 0 .5.42h4a.5.5 0 0 0 .5-.42l.37-2.6a7.93 7.93 0 0 0 1.73-1l2.43 1a.5.5 0 0 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.65Z"/>
-              </svg>
-            </span>
-            <span class="label">Settings</span>
-          </button>
+        <h3>Impact</h3>
+        <ul class="bullets">
+          <li>Less noise: claims ship with sources.</li>
+          <li>Faster decisions: positions form through versions and counter-arguments.</li>
+          <li>Transparency: changes are visible in diffs and over time.</li>
+          <li>Skill-building: users practice evidence comparison and risk framing.</li>
+          <li>Team effect: reviews and a shared format reduce unproductive debate.</li>
+        </ul>
 
-          <!-- 7. Sign out -->
-          <button class="menu-item danger" role="menuitem" data-action="logout" aria-label="Sign out">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M10 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m5 14 5-5-5-5m5 5H9"/>
-              </svg>
-            </span>
-            <span class="label">Sign out</span>
-          </button>
-        </nav>
-      </aside>
+        <h3>Principles</h3>
+        <ul class="bullets">
+          <li>Sources before opinions.</li>
+          <li>Versions over finality.</li>
+          <li>Public diffs and confidence labels.</li>
+          <li>Zero tolerance for personal attacks.</li>
+          <li>User data is not a product; clear privacy controls.</li>
+        </ul>
 
-      <!-- Center content -->
-      <article class="doc">
-        <!-- Watermark -->
-        <div class="watermark" aria-hidden="true">“The map is not the territory.”</div>
+        <h3>Source policy &amp; moderation</h3>
+        <ul class="bullets">
+          <li>Documented acceptance criteria for sources.</li>
+          <li>Mandatory citations with caps on verbatim quotes.</li>
+          <li>Confidence labels at thesis and version levels.</li>
+          <li>Appeals and an edits journal.</li>
+        </ul>
 
-        <!-- Hero -->
-        <section class="hero" aria-labelledby="hero-title">
-          <div class="hero-img" aria-hidden="true"></div>
-          <div class="hero-text">
-            <h1 class="title" id="hero-title">Metaphysics</h1>
-            <p>Concise guide to the study of what there is, how it is, and why it matters.</p>
-          </div>
-        </section>
+        <h3>Author reputation</h3>
+        <ul class="bullets">
+          <li>Reputation grows via verifiable theses, precise updates, and quality sources.</li>
+          <li>Citations and reviews weigh more than likes.</li>
+          <li>Author reputation is distinct from topic reputation.</li>
+        </ul>
 
-        <!-- Quick start -->
-        <section class="block" id="quick" aria-labelledby="quick-title">
-          <h2 id="quick-title">Quick start</h2>
+        <h3>Quality metrics</h3>
+        <ul class="bullets">
+          <li>Meaningful reads: &gt;45s on card and ≥1 source opened.</li>
+          <li>Activation: first-day vote plus ≥3 sources opened.</li>
+          <li>Retention: returns to topics and versions per thesis.</li>
+          <li>UGC share, review rate, ontology link depth.</li>
+        </ul>
 
-          <nav aria-label="On-page contents">
-            <h4>Contents</h4>
-            <ul>
-              <li><a href="#proem">Proem</a></li>
-              <li><a href="#ontology">I. Substance and the Structure of Being</a></li>
-              <li><a href="#four-causes">II. The Four Causes</a></li>
-              <li><a href="#modality">III. Possibility, Necessity, and Law</a></li>
-              <li><a href="#identity-change">IV. Identity, Change, and Persistence</a></li>
-              <li><a href="#causation-powers">V. Causation, Powers, and Explanation</a></li>
-              <li><a href="#space-time">VI. Space and Time</a></li>
-              <li><a href="#mind-matter">VII. Mind and Matter</a></li>
-              <li><a href="#method">VIII. Method</a></li>
-              <li><a href="#highest-cause">IX. The Highest Cause</a></li>
-              <li><a href="#study-map">X. Summary Map for Study</a></li>
-              <li><a href="#closing">Closing</a></li>
-            </ul>
-          </nav>
+        <h3>Safety &amp; legal</h3>
+        <ul class="bullets">
+          <li>Content licenses, DMCA process, explicit disclaimers.</li>
+          <li>Separate moderation ledger; audit trails for orgs.</li>
+          <li>Private spaces, SSO, and change audits for teams.</li>
+        </ul>
 
-          <p class="muted small">Time: 90–120 minutes for a first pass.</p>
-          <button class="btn test-btn" id="openQuizBtn" type="button">Test yourself →</button>
-        </section>
+        <h3>How to work with us</h3>
+        <ul class="bullets">
+          <li>Individuals: read, save, subscribe to topics.</li>
+          <li>Creators: publish theses, maintain versions, connect sources.</li>
+          <li>Teams: review in private spaces, export briefs.</li>
+          <li>Partners &amp; EDU: embed the widget in blogs and courses; run workshops.</li>
+        </ul>
 
-        <!-- Main article -->
-        <article id="metaphysics-article" aria-labelledby="metaphysics-title">
-          <header>
-            <h1 id="metaphysics-title">Metaphysics: Study of Being as Being</h1>
-            <p>Metaphysics inquires into first principles and causes. It does not ask about one craft or species, but about what belongs to all things insofar as they are.</p>
-          </header>
+        <h3>Our commitment</h3>
+        <ul class="bullets">
+          <li>Transparent sources.</li>
+          <li>Honest corrections with dates.</li>
+          <li>Explainable ranking and reputation logic.</li>
+        </ul>
 
-          <section id="proem" aria-labelledby="proem-title">
-            <h2 id="proem-title">Proem</h2>
-            <p>Humans seek knowledge by nature. We begin with sense, then memory, then experience. Wisdom asks “because of what?” in the most general way. This inquiry is first philosophy.</p>
-          </section>
-
-          <section id="ontology" aria-labelledby="ontology-title">
-            <h2 id="ontology-title">I. Substance and the Structure of Being (Ontology)</h2>
-            <p>What most truly exists is <strong>substance</strong>: the “this” that underlies and persists. Natural substances are composites of matter and form.</p>
-            <ul>
-              <li><strong>Matter</strong>: that out of which a thing is made.</li>
-              <li><strong>Form</strong>: what makes it the kind of thing it is.</li>
-              <li><strong>Composite</strong>: the unified whole here and now.</li>
-            </ul>
-            <p>Universals are said of substances, but primary reality lies in individual substances on which other things depend.</p>
-          </section>
-
-          <section id="four-causes" aria-labelledby="four-causes-title">
-            <h2 id="four-causes-title">II. The Four Causes and Explanation</h2>
-            <ol>
-              <li><strong>Material cause</strong>: what it is made from.</li>
-              <li><strong>Formal cause</strong>: what it is to be that thing (its essence).</li>
-              <li><strong>Efficient cause</strong>: the source of change.</li>
-              <li><strong>Final cause</strong>: the end for the sake of which it is.</li>
-            </ol>
-            <p>Where there is order, ends are principles, not ornaments. Explanation is complete only when the end is clear.</p>
-          </section>
-
-          <section id="modality" aria-labelledby="modality-title">
-            <h2 id="modality-title">III. Possibility, Necessity, and Law (Modality)</h2>
-            <p>A thing is <strong>possible</strong> when it has the capacity to be; <strong>necessary</strong> when it cannot be otherwise given its nature.</p>
-            <ul>
-              <li><strong>Natural necessity</strong>: from what a thing is.</li>
-              <li><strong>Hypothetical necessity</strong>: from an end chosen; if the end is set, the means are necessary.</li>
-            </ul>
-            <p>What we call laws summarize these necessities, whose ground is in natures and forms, not in words.</p>
-          </section>
-
-          <section id="identity-change" aria-labelledby="identity-change-title">
-            <h2 id="identity-change-title">IV. Identity, Change, and Persistence</h2>
-            <p>Change is the actualization of what exists potentially, insofar as it is potential.</p>
-            <ul>
-              <li><strong>Generation</strong>: coming-to-be when form informs matter.</li>
-              <li><strong>Alteration</strong>: change in quality while substance remains.</li>
-              <li><strong>Locomotion</strong>: change in place.</li>
-            </ul>
-            <p>A thing remains the same when its ruling form is one and continuous. Identity follows organized form.</p>
-          </section>
-
-          <section id="causation-powers" aria-labelledby="causation-powers-title">
-            <h2 id="causation-powers-title">V. Causation, Powers, and Explanation</h2>
-            <p>Causes are <em>per se</em> when they belong to a thing as such, and accidental when by coincidence. Powers are directed tendencies rooted in form.</p>
-            <p>Explanation seeks the proper “because” at each level: elements by natures, organisms by ends, artifacts by designs.</p>
-          </section>
-
-          <section id="space-time" aria-labelledby="space-time-title">
-            <h2 id="space-time-title">VI. Space and Time</h2>
-            <ul>
-              <li><strong>Place</strong>: the inner boundary of the containing body.</li>
-              <li><strong>Time</strong>: the number of motion with respect to before and after; it depends on change and a soul that counts.</li>
-            </ul>
-          </section>
-
-          <section id="mind-matter" aria-labelledby="mind-matter-title">
-            <h2 id="mind-matter-title">VII. Mind and Matter (Soul and World)</h2>
-            <p>Living things are hylomorphic: body as matter, soul as form. Nutrition, perception, and thought are powers of one living substance.</p>
-            <p>Intellect knows by becoming its object in act: potentially all forms, actually this form or that in understanding.</p>
-          </section>
-
-          <section id="method" aria-labelledby="method-title">
-            <h2 id="method-title">VIII. Method: From Appearances to Principles</h2>
-            <p>Begin from reputable opinions and appearances. Preserve what is true in each and resolve conflicts by better causes. Demonstrate where possible; for first principles, proceed to what is simpler and prior.</p>
-          </section>
-
-          <section id="highest-cause" aria-labelledby="highest-cause-title">
-            <h2 id="highest-cause-title">IX. The Highest Cause</h2>
-            <p>Series of movers do not explain themselves. There is an unmoved mover: pure actuality, cause as final rather than pushing. As the intelligible object of desire and thought, it explains motion and order.</p>
-          </section>
-
-          <section id="study-map" aria-labelledby="study-map-title">
-            <h2 id="study-map-title">X. Summary Map for Study</h2>
-            <ul>
-              <li><strong>Ontology</strong>: substance; matter–form; categories.</li>
-              <li><strong>Causes</strong>: material, formal, efficient, final.</li>
-              <li><strong>Modality</strong>: potentiality–actuality; necessity–possibility.</li>
-              <li><strong>Identity and Change</strong>: persistence by form; kinds of change.</li>
-              <li><strong>Causation and Powers</strong>: <em>per se</em> vs accidental; teleology.</li>
-              <li><strong>Space and Time</strong>: place as boundary; time as numbered motion.</li>
-              <li><strong>Mind and Matter</strong>: soul as form; intellect as potentially all forms.</li>
-              <li><strong>First Principle</strong>: unmoved mover as final cause.</li>
-            </ul>
-          </section>
-
-          <section id="closing" aria-labelledby="closing-title">
-            <h2 id="closing-title">Closing</h2>
-            <p>Metaphysics studies being as being and the attributes that belong to it. It asks what things are, why they are, and for the sake of what. Its end is knowledge of the highest causes, which orders the rest.</p>
-          </section>
-        </article>
-
-        <!-- Core questions -->
-        <section class="block readable" id="core-qs" aria-labelledby="core-qs-title">
-          <h2 id="core-qs-title">Core questions</h2>
-          <ul class="two-col" id="coreList">
-            <li>What kinds of things are fundamental?</li>
-            <li>Are numbers, properties, or universals real?</li>
-            <li>What is a law of nature?</li>
-            <li>Could the world have been otherwise?</li>
-            <li>What is personal identity across time?</li>
-            <li>Do causes produce effects or merely correlate?</li>
-            <li>Is time tensed or tenseless?</li>
-            <li>How does mind relate to brain?</li>
-          </ul>
-        </section>
-
-        <!-- Subfields -->
-        <section class="block readable" id="subfields" aria-labelledby="subfields-title">
-          <h2 id="subfields-title">Subfields</h2>
-          <div class="cards">
-            <div class="card">
-              <h3>Ontology</h3>
-              <p>Categories of being, mereology, realism vs. nominalism.</p>
-            </div>
-            <div class="card">
-              <h3>Modality</h3>
-              <p>Possible worlds, essence, counterfactuals.</p>
-            </div>
-            <div class="card">
-              <h3>Identity &amp; change</h3>
-              <p>Persistence, endurantism vs. perdurantism.</p>
-            </div>
-            <div class="card">
-              <h3>Causation</h3>
-              <p>Regularity, counterfactual, powers; causal graphs.</p>
-            </div>
-            <div class="card">
-              <h3>Space &amp; time</h3>
-              <p>Substantivalism vs. relationism; presentism vs. eternalism.</p>
-            </div>
-            <div class="card">
-              <h3>Mind &amp; world</h3>
-              <p>Dualism, physicalism, panpsychism.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Methods -->
-        <section class="block readable" id="methods" aria-labelledby="methods-title">
-          <h2 id="methods-title">Methods</h2>
-          <ul>
-            <li><strong>Conceptual analysis:</strong> clarify terms and commitments.</li>
-            <li><strong>Thought experiments:</strong> test intuitions under variation.</li>
-            <li><strong>Formal tools:</strong> modal logic, sets, dependence models.</li>
-            <li><strong>Inference to best explanation:</strong> weigh cost vs. power.</li>
-            <li><strong>Cross-checks:</strong> coherence with science and language.</li>
-          </ul>
-        </section>
-
-        <!-- Relations -->
-        <section class="block readable" id="relations" aria-labelledby="relations-title">
-          <h2 id="relations-title">Relations to science</h2>
-          <p>Metaphysics interprets and organizes scientific results rather than duplicating them.</p>
-        </section>
-
-        <!-- Critiques -->
-        <section class="block readable" id="critiques" aria-labelledby="critiques-title">
-          <h2 id="critiques-title">Critiques &amp; limits</h2>
-          <ul>
-            <li><strong>Verificationism:</strong> non-testable claims risk meaninglessness.</li>
-            <li><strong>Quine:</strong> ontology should follow best science.</li>
-            <li><strong>Method:</strong> unchecked intuitions mislead.</li>
-          </ul>
-        </section>
-
-        <!-- Roadmap -->
-        <section class="block readable" id="roadmap" aria-labelledby="roadmap-title">
-          <h2 id="roadmap-title">Study roadmap</h2>
-          <ol>
-            <li>Primer: SEP/IEP article.</li>
-            <li>Classic: Aristotle or Descartes (selected).</li>
-            <li>Modern: van Inwagen; Lowe.</li>
-            <li>Method: Williamson on methodology.</li>
-            <li>Project: one thesis card with sources.</li>
-          </ol>
-        </section>
-
-        <!-- FAQs -->
-        <section class="block readable" id="faqs" aria-labelledby="faqs-title">
-          <h2 id="faqs-title">FAQs</h2>
-          <details>
-            <summary>Is metaphysics obsolete after modern physics?</summary>
-            <p>No. Physics is empirical; metaphysics clarifies categories.</p>
-          </details>
-          <details>
-            <summary>Isn’t it just speculation?</summary>
-            <p>Good work states assumptions, argues, and respects science.</p>
-          </details>
-        </section>
+        <h3>Contact</h3>
+        <p>team@helius.example</p>
       </article>
 
-      <!-- Right ToC -->
-      <aside class="toc" aria-label="On this page">
-        <div class="toc-box">
-          <h4>On this page</h4>
-          <nav id="tocList" aria-label="Section links"></nav>
-        </div>
-        <div class="help-box">
-          <button class="btn-ghost w100" type="button">Ask our Docs</button>
-        </div>
-      </aside>
-    </main>
-  </div>
+      <!-- Topics (6) with richer facts -->
+      <article class="card hover-scale" id="topics">
+        <h2>Topics and streams</h2>
+        <p>Subscribe to streams you care about. Each card shows scope, methods, and core sources.</p>
 
-  <!-- Self-test modal -->
-  <div class="modal" id="quizModal" aria-hidden="true">
-    <div class="overlay" id="quizOverlay" tabindex="-1"></div>
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
-      <header class="modal-head">
-        <h3 id="quizTitle">Self-test</h3>
-        <button class="icon-btn" id="quizClose" type="button" aria-label="Close">×</button>
-      </header>
-      <div class="modal-body" id="quizBody"></div>
-      <footer class="modal-foot">
-        <button class="btn-ghost" id="quizCancel" type="button">Close</button>
-      </footer>
-    </div>
-  </div>
+        <div class="grid-2">
+          <div class="info-item hover-scale" data-topic="economics">
+            <h3>Economics</h3>
+            <p>Markets, policy, trade, labor, incentives.</p>
+            <ul>
+              <li>Questions: inflation vs. unemployment, productivity, wages.</li>
+              <li>Methods: time-series, natural experiments, cost–benefit.</li>
+              <li>Indicators: CPI, PPI, GDP, unemployment, real wages.</li>
+            </ul>
+            <p><strong>Core sources:</strong> IMF, World Bank, OECD, BLS, BEA, FRED.</p>
+          </div>
 
-  <script src="meta.js"></script>
+          <div class="info-item hover-scale" data-topic="technology">
+            <h3>Technology</h3>
+            <p>AI, cybersecurity, platforms, open source, regulation.</p>
+            <ul>
+              <li>Risks: alignment, privacy, misuse, critical infrastructure.</li>
+              <li>Benchmarks: reliability, safety evals, data lineage.</li>
+              <li>Trade-offs: speed vs. governance, openness vs. abuse.</li>
+            </ul>
+            <p><strong>Core sources:</strong> arXiv, NIST, ISO/IEC, CSET.</p>
+          </div>
+
+          <div class="info-item hover-scale" data-topic="geopolitics">
+            <h3>Geopolitics</h3>
+            <p>Security, alliances, sanctions, energy corridors.</p>
+            <ul>
+              <li>Frames: power balance, deterrence, regime type.</li>
+              <li>Levers: trade controls, aid, diplomacy, information.</li>
+              <li>Watchlists: Europe, Indo-Pacific, Middle East.</li>
+            </ul>
+            <p><strong>Core sources:</strong> UN, NATO, trade stats, think tanks.</p>
+          </div>
+
+          <div class="info-item hover-scale" data-topic="health-science">
+            <h3>Health &amp; Science</h3>
+            <p>Evidence hierarchies, trials, population health.</p>
+            <ul>
+              <li>Studies: RCTs, cohort, case-control, meta-analysis.</li>
+              <li>Quality: pre-registration, blinding, effect sizes, bias.</li>
+              <li>Outcomes: mortality, QALYs, adverse events.</li>
+            </ul>
+            <p><strong>Core sources:</strong> WHO, NIH, Cochrane, PubMed.</p>
+          </div>
+
+          <div class="info-item hover-scale" data-topic="climate-energy">
+            <h3>Climate &amp; Energy</h3>
+            <p>Emissions, grids, storage, transition policy.</p>
+            <ul>
+              <li>Scopes: 1 (direct), 2 (electricity), 3 (value chain).</li>
+              <li>Grid needs: firm power, transmission, demand response.</li>
+              <li>Metrics: LCOE, capacity factor, lifecycle intensity.</li>
+            </ul>
+            <p><strong>Core sources:</strong> IPCC, IEA, EIA, national inventories.</p>
+          </div>
+
+          <div class="info-item hover-scale" data-topic="law-policy">
+            <h3>Law &amp; Policy</h3>
+            <p>Rights, courts, governance, implementation.</p>
+            <ul>
+              <li>Levels: constitutional, statutory, regulatory, case law.</li>
+              <li>Cycle: agenda → drafting → comment → enforcement → review.</li>
+              <li>Tests: strict scrutiny, proportionality, administrative record.</li>
+            </ul>
+            <p><strong>Core sources:</strong> registers, court opinions, OECD reviews.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card hover-scale" id="login">
+        <h2>Sign in and onboarding</h2>
+        <p>Select 3 topics → interactive Bias toggles → first vote.</p>
+        <a class="btn btn-ghost hover-scale" href="start.html">Go to sign in</a>
+      </article>
+
+      <article class="card hover-scale" id="contacts">
+        <h2>Contacts</h2>
+        <p>team@helius.example</p>
+      </article>
+
+      <article class="card hover-scale" id="resources">
+        <h2>Resources</h2>
+        <ul class="bullets">
+          <li>API docs</li>
+          <li>Embed widget</li>
+          <li>Policies and DMCA</li>
+        </ul>
+      </article>
+
+    </aside>
+  </main>
+
+  <script src="main.js"></script>
 </body>
 </html>

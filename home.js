@@ -1,66 +1,270 @@
-// Theme toggle (dark/white only)
-const THEME_KEY = 'helius-theme';
-const themeBtn = document.getElementById('themeBtn');
-function setTheme(mode){
-  document.documentElement.setAttribute('data-theme', mode);
-  localStorage.setItem(THEME_KEY, mode);
-}
-setTheme(localStorage.getItem(THEME_KEY) || 'dark');
-themeBtn.addEventListener('click', ()=>{
-  setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
+/* meta.js */
+(() => {
+  "use strict";
 
-// Greet from onboarding profile
-const profile = JSON.parse(localStorage.getItem('helius-profile') || '{}');
-document.getElementById('helloName').textContent = profile.fullName || 'User';
+  // ===== Utilities
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
 
-// Simple SVG line chart without libs
-(function lineChart(){
-  const el = document.getElementById('lineChart');
-  const w = 280, h = 110, pad = 10;
-  const points = [14,22,18,30,26,32,28]; // 7 days, grayscale only
-  const max = Math.max(...points), min = Math.min(...points);
-  const scaleX = (i)=> pad + i*( (w-2*pad)/(points.length-1) );
-  const scaleY = (v)=> h-pad - ( (v-min)/(max-min || 1) ) * (h-2*pad);
-  const path = points.map((v,i)=> (i?'L':'M')+scaleX(i)+','+scaleY(v)).join(' ');
-  el.innerHTML = `
-    <svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">
-      <rect x="0" y="0" width="${w}" height="${h}" rx="12" ry="12" fill="none"/>
-      <path d="${path}" fill="none" stroke="currentColor" stroke-width="2"/>
-      ${points.map((v,i)=>`<circle cx="${scaleX(i)}" cy="${scaleY(v)}" r="3" fill="currentColor"/>`).join('')}
-    </svg>`;
-})();
+  // ===== Theme toggle
+  const html = document.documentElement;
+  const themeBtn = $("#themeToggle");
 
-// Donut progress (72% by default)
-(function donut(){
-  const wrap = document.getElementById('donut');
-  const pct = Math.round((parseFloat(wrap.dataset.value) || 0)*100);
-  const dash = pct * 100 / 100; // percent in "36 radius circle scale" simplified
-  // 100 length for simplicity; we visually map to 360deg
-  wrap.querySelector('.val').setAttribute('stroke-dasharray', `${dash} ${100-dash}`);
-  document.getElementById('donutPct').textContent = pct + '%';
-})();
+  function getSystemTheme() {
+    return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function applyTheme(t) {
+    html.setAttribute("data-theme", t);
+    if (themeBtn) themeBtn.setAttribute("aria-pressed", String(t === "dark"));
+    localStorage.setItem("theme", t);
+  }
+  function initTheme() {
+    const saved = localStorage.getItem("theme");
+    const current = saved || html.getAttribute("data-theme") || getSystemTheme();
+    applyTheme(current);
+  }
+  on(themeBtn, "click", () => {
+    const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    applyTheme(next);
+  });
 
-// Goals checkbox persistence
-(function goals(){
-  const list = document.getElementById('goalList');
-  const KEY = 'helius-goals';
-  const saved = JSON.parse(localStorage.getItem(KEY) || '[]');
-  Array.from(list.querySelectorAll('input')).forEach((cb,i)=>{
-    cb.checked = !!saved[i];
-    cb.addEventListener('change', ()=>{
-      const arr = Array.from(list.querySelectorAll('input')).map(x=>x.checked);
-      localStorage.setItem(KEY, JSON.stringify(arr));
+  // ===== User menu
+  const userBtn = $("#userBtn");
+  const userMenu = $("#userMenu");
+  function closeUserMenu() {
+    if (!userMenu) return;
+    userMenu.hidden = true;
+    userBtn?.setAttribute("aria-expanded", "false");
+  }
+  function toggleUserMenu() {
+    if (!userMenu) return;
+    const open = userMenu.hidden;
+    userMenu.hidden = !open;
+    userBtn?.setAttribute("aria-expanded", String(open));
+    if (open) userMenu.querySelector("a")?.focus();
+  }
+  on(userBtn, "click", (e) => { e.stopPropagation(); toggleUserMenu(); });
+  on(document, "click", (e) => {
+    if (!userMenu || userMenu.hidden) return;
+    if (e.target instanceof Node && !userMenu.contains(e.target) && e.target !== userBtn) closeUserMenu();
+  });
+  on(document, "keydown", (e) => { if (e.key === "Escape") closeUserMenu(); });
+
+  // ===== Left menu actions (only what's present)
+  $$(".menu-item[data-action]").forEach(btn => {
+    on(btn, "click", () => {
+      const a = btn.getAttribute("data-action");
+      if (a === "home") { window.location.href = "index.html"; }
+      if (a === "notes") {
+        const pop = $(".notes-popover");
+        if (pop) {
+          const open = pop.getAttribute("aria-hidden") === "false";
+          pop.setAttribute("aria-hidden", open ? "true" : "false");
+          if (!open) pop.querySelector("textarea,button,[href],input,select")?.focus();
+        }
+      }
     });
   });
+
+  // ===== Floating back button
+  function ensureBackFab() {
+    if ($(".back-fab")) return;
+    const b = document.createElement("button");
+    b.className = "back-fab";
+    b.type = "button";
+    b.setAttribute("aria-label", "Go back");
+    b.textContent = "← Back";
+    on(b, "click", () => {
+      if (history.length > 1) history.back();
+      else window.location.href = "index.html";
+    });
+    document.body.appendChild(b);
+  }
+
+  // ===== Build ToC + Scrollspy
+  const tocList = $("#tocList");
+  function buildToc() {
+    if (!tocList) return;
+    const roots = $("article.doc") || document;
+    const heads = $$("h2[id], h3[id]", roots);
+    tocList.innerHTML = "";
+    const ul = document.createElement("ul");
+    ul.setAttribute("role", "list");
+    heads.forEach(h => {
+      const id = h.id;
+      if (!id) return;
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = `#${id}`;
+      a.textContent = h.textContent?.trim() || id;
+      a.dataset.target = id;
+      if (h.tagName === "H3") li.style.paddingLeft = "12px";
+      on(a, "click", (e) => {
+        e.preventDefault();
+        const target = document.getElementById(id);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        setActiveToc(id);
+      });
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    tocList.appendChild(ul);
+  }
+  function setActiveToc(id) {
+    $$(`#tocList a`).forEach(a => {
+      const active = a.dataset.target === id;
+      a.classList.toggle("active", active);
+      a.setAttribute("aria-current", active ? "true" : "false");
+    });
+  }
+  function initScrollSpy() {
+    const roots = $("article.doc") || document;
+    const heads = $$("h2[id], h3[id]", roots);
+    if (!heads.length) return;
+    const io = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      const top = visible[0] || entries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (top?.target?.id) setActiveToc(top.target.id);
+    }, { rootMargin: "-40% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] });
+    heads.forEach(h => io.observe(h));
+  }
+
+  // ===== Self-test modal with inline quiz
+  const modal = $("#quizModal");
+  const overlay = $("#quizOverlay");
+  const openQuizBtn = $("#openQuizBtn");
+  const closeBtn = $("#quizClose");
+  const cancelBtn = $("#quizCancel");
+  const quizBody = $("#quizBody");
+
+  const QUIZ = [
+    {
+      q: "Which cause explains what a thing is essentially?",
+      opts: ["Material", "Formal", "Efficient", "Final"],
+      a: 1
+    },
+    {
+      q: "Change as actuality of what is potential defines:",
+      opts: ["Generation", "Alteration", "Motion", "Change in general"],
+      a: 3
+    },
+    {
+      q: "For Aristotle, primary reality lies in:",
+      opts: ["Universals", "Propositions", "Individual substances", "Numbers"],
+      a: 2
+    },
+    {
+      q: "Time is:",
+      opts: ["Independent of change", "Number of motion regarding before/after", "Purely subjective", "Identical to space"],
+      a: 1
+    },
+    {
+      q: "The unmoved mover is chiefly a:",
+      opts: ["Pushing efficient cause", "Material cause", "Final cause", "Formal cause only"],
+      a: 2
+    }
+  ];
+
+  function renderQuiz() {
+    if (!quizBody) return;
+    quizBody.innerHTML = "";
+    const form = document.createElement("form");
+    form.id = "quizForm";
+    QUIZ.forEach((item, i) => {
+      const fs = document.createElement("fieldset");
+      const lg = document.createElement("legend");
+      lg.textContent = `${i + 1}. ${item.q}`;
+      fs.appendChild(lg);
+      item.opts.forEach((opt, j) => {
+        const id = `q${i}o${j}`;
+        const label = document.createElement("label");
+        label.setAttribute("for", id);
+        label.style.display = "block";
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = `q${i}`;
+        input.value = String(j);
+        input.id = id;
+        label.appendChild(input);
+        label.append(` ${opt}`);
+        fs.appendChild(label);
+      });
+      form.appendChild(fs);
+    });
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.justifyContent = "flex-end";
+    actions.style.gap = "8px";
+
+    const checkBtn = document.createElement("button");
+    checkBtn.type = "button";
+    checkBtn.className = "btn";
+    checkBtn.textContent = "Check answers";
+    on(checkBtn, "click", () => {
+      const data = new FormData(form);
+      let score = 0;
+      QUIZ.forEach((item, i) => {
+        const pick = Number(data.get(`q${i}`));
+        if (pick === item.a) score++;
+      });
+      const note = document.createElement("p");
+      note.textContent = `Score: ${score} / ${QUIZ.length}`;
+      note.setAttribute("aria-live", "polite");
+      quizBody.appendChild(note);
+    });
+
+    actions.appendChild(checkBtn);
+    form.appendChild(actions);
+    quizBody.appendChild(form);
+  }
+  function openModal() {
+    if (!modal) return;
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    closeUserMenu();
+    renderQuiz();
+    closeBtn?.focus();
+  }
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+  }
+  on(openQuizBtn, "click", openModal);
+  on(closeBtn, "click", closeModal);
+  on(cancelBtn, "click", closeModal);
+  on(overlay, "click", closeModal);
+  on(document, "keydown", (e) => {
+    if (e.key === "Escape" && modal?.classList.contains("show")) closeModal();
+  });
+
+  // ===== “Ask our Docs” → focus search
+  on($(".help-box .btn-ghost"), "click", () => {
+    const s = $(".search input");
+    if (s) { s.focus(); s.select(); }
+  });
+
+  // ===== Smooth internal anchor behavior for all in-doc links
+  $$('a[href^="#"]').forEach(a => {
+    on(a, "click", (e) => {
+      const id = a.getAttribute("href")?.slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.replaceState(null, "", `#${id}`);
+    });
+  });
+
+  // ===== Init
+  document.addEventListener("DOMContentLoaded", () => {
+    initTheme();
+    ensureBackFab();
+    buildToc();
+    initScrollSpy();
+  });
 })();
-
-// Add task button (placeholder)
-document.getElementById('addTask').addEventListener('click', ()=>{
-  alert('Hook up your task creator here.');
-});
-
-// Create button (placeholder)
-document.getElementById('createBtn').addEventListener('click', ()=>{
-  alert('Attach creation modal here.');
-});
