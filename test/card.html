@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Card</title>
+  <link rel="stylesheet" href="grid.css" />
+  <style>
+    .wrap{max-width:900px;margin:4rem auto;padding:1.25rem;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.03)}
+    h1{margin:.2rem 0 1rem;font-size:28px}
+    .back{display:inline-block;margin-top:1rem;padding:.5rem .8rem;border:1px solid rgba(255,255,255,.18);border-radius:10px;text-decoration:none;color:#fff;background:rgba(255,255,255,.06)}
+    .badge{display:inline-block;margin:.25rem .5rem 0 0;padding:.25rem .5rem;border-radius:8px;background:rgba(255,255,255,.12)}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1 id="title">Card</h1>
+    <div id="meta"></div>
+    <p>Replace this placeholder with your card content or route to your app view.</p>
+    <a class="back" href="test.html">← Back</a>
+  </main>
+
+  <script>
+    const url = new URL(location.href);
+    const id = url.searchParams.get('id') || '—';
+    const topic = url.searchParams.get('topic') || 'unknown';
+    const topicName = ({
+      metaphysics:'Metaphysics', ethics:'Ethics', politics:'Politics', economics:'Economics',
+      science:'Science', technology:'Technology', health:'Health', education:'Education',
+      art:'Art', culture:'Culture', ecology:'Ecology', psychology:'Psychology', law:'Law'
+    })[topic] || topic;
+
+    document.getElementById('title').textContent = `Card #${id}`;
+    document.getElementById('meta').innerHTML = `<span class="badge">Topic: ${topicName}</span>`;
+  </script>
+</body>
+</html>

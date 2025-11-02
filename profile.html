@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HELIUS — Profile</title>
+  <meta name="description" content="Manage your HELIUS profile, preferences, and data." />
+  <link rel="stylesheet" href="profile.css" />
+</head>
+<body>
+
+  <!-- Always-visible Back -->
+  <button class="back-fab" id="backBtn" aria-label="Go back">← Back</button>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">HELIUS</div>
+    <nav class="top-actions">
+      <button class="btn-ghost" id="themeBtn" title="Toggle theme">◑</button>
+      <a class="btn-ghost" href="index.html">Home</a>
+      <a class="btn" href="home.html">Open Dashboard</a>
+    </nav>
+  </header>
+
+  <!-- Main layout -->
+  <main class="wrap">
+    <!-- Left: profile + identity -->
+    <section class="panel">
+      <h2>Identity</h2>
+
+      <div class="avatar-row">
+        <div class="avatar" id="avatarPreview" aria-label="Avatar">👤</div>
+        <div class="avatar-ctls">
+          <label for="avatarInput" class="btn">Upload avatar</label>
+          <input id="avatarInput" type="file" accept="image/*" hidden />
+          <button class="btn-ghost" id="avatarReset" type="button">Reset</button>
+          <p class="muted small">PNG/JPG, suggested ≤ 512×512. Stored locally.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <label class="field">
+          <span>Full name</span>
+          <input id="fullName" type="text" placeholder="Alex Johnson" autocomplete="name" />
+        </label>
+        <label class="field">
+          <span>Username (slug)</span>
+          <input id="username" type="text" placeholder="alex-johnson" autocomplete="nickname" />
+          <small class="muted">Auto from name. You can edit.</small>
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input id="email" type="email" placeholder="name@example.com" autocomplete="email" />
+        </label>
+        <label class="field">
+          <span>Age</span>
+          <input id="age" type="number" min="13" max="120" inputmode="numeric" />
+        </label>
+        <label class="field">
+          <span>Status</span>
+          <select id="status">
+            <option value="" selected hidden>Choose…</option>
+            <option value="student">Student</option>
+            <option value="working">Working</option>
+            <option value="unemployed">Unemployed</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Country / region</span>
+          <input id="country" type="text" placeholder="Country or region" autocomplete="country-name" />
+        </label>
+        <label class="field">
+          <span>Preferred language</span>
+          <select id="language">
+            <option value="">Auto</option>
+            <option>English</option>
+            <option>Ukrainian</option>
+            <option>Russian</option>
+            <option>German</option>
+            <option>Spanish</option>
+            <option>French</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Time zone</span>
+          <input id="timezone" type="text" readonly />
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Goals</span>
+        <textarea id="goals" rows="3" placeholder="What do you want from HELIUS?"></textarea>
+      </label>
+
+      <fieldset class="field">
+        <legend>Interests</legend>
+        <div class="checks" id="interests">
+          <label><input type="checkbox" value="research" /> Research</label>
+          <label><input type="checkbox" value="policy" /> Policy</label>
+          <label><input type="checkbox" value="technology" /> Technology</label>
+          <label><input type="checkbox" value="health" /> Health</label>
+          <label><input type="checkbox" value="finance" /> Finance</label>
+          <label><input type="checkbox" value="education" /> Education</label>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- Middle: preferences -->
+    <section class="panel">
+      <h2>Preferences</h2>
+
+      <div class="grid">
+        <label class="field">
+          <span>Theme</span>
+          <div class="seg">
+            <button type="button" class="seg-btn" data-theme="dark">Dark</button>
+            <button type="button" class="seg-btn" data-theme="light">Light</button>
+            <button type="button" class="seg-btn" data-theme="auto">Auto</button>
+          </div>
+          <small class="muted">Auto = dark at night, light at day (local time).</small>
+        </label>
+
+        <label class="field">
+          <span>Digest</span>
+          <select id="digest">
+            <option value="off">Off</option>
+            <option value="weekly">Weekly</option>
+            <option value="daily">Daily</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Email notifications</span>
+          <div class="checks">
+            <label><input type="checkbox" id="nProduct" /> Product updates</label>
+            <label><input type="checkbox" id="nMentions" /> Mentions and replies</label>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>Consent to personalize</span>
+          <label class="switch">
+            <input id="consent" type="checkbox" />
+            <span>Store onboarding data for personalization</span>
+          </label>
+        </label>
+      </div>
+    </section>
+
+    <!-- Right: data & safety -->
+    <section class="panel">
+      <h2>Data & Safety</h2>
+
+      <div class="progress">
+        <div class="bar"><div class="fill" id="completeFill"></div></div>
+        <p class="muted small"><span id="completePct">0</span>% profile completeness</p>
+      </div>
+
+      <div class="row">
+        <button class="btn" id="saveBtn" disabled>Save changes</button>
+        <span class="muted small" id="saveStatus" aria-live="polite"></span>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="grid grid-2">
+        <div class="box">
+          <h3>Export data</h3>
+          <p class="muted small">Download a local JSON backup of your profile and settings.</p>
+          <button class="btn" id="exportBtn">Download backup</button>
+        </div>
+        <div class="box">
+          <h3>Import data</h3>
+          <p class="muted small">Restore from a HELIUS JSON backup.</p>
+          <label for="importInput" class="btn">Choose file</label>
+          <input id="importInput" type="file" accept="application/json" hidden />
+        </div>
+      </div>
+
+      <div class="warn">
+        <h3>Danger zone</h3>
+        <div class="row">
+          <button class="btn-ghost danger" id="wipeBtn" type="button">Delete all local data</button>
+          <button class="btn-ghost" id="logoutBtn" type="button">Sign out</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="profile.js"></script>
+</body>
+</html>

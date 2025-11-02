@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HELIUS — Friends</title>
+  <meta name="description" content="Manage friends, invites, and blocks." />
+  <link rel="stylesheet" href="friends.css" />
+</head>
+<body>
+
+  <!-- Always-visible Back -->
+  <button class="back-fab" id="backBtn" aria-label="Go back">← Back</button>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">HELIUS</div>
+    <nav class="top-actions">
+      <a class="btn-ghost" href="index.html">Home</a>
+      <a class="btn-ghost" href="meta.html">Docs</a>
+      <a class="btn-ghost" href="profile.html">Profile</a>
+      <button class="btn-ghost" id="themeBtn" title="Toggle theme">◑</button>
+    </nav>
+  </header>
+
+  <!-- Main layout -->
+  <main class="wrap">
+
+    <!-- Left: add + filters -->
+    <section class="panel">
+      <h2>Add friend</h2>
+      <form id="addForm" class="grid">
+        <label class="field">
+          <span>Full name</span>
+          <input id="addName" type="text" placeholder="Alex Johnson" required />
+        </label>
+        <label class="field">
+          <span>Username or email</span>
+          <input id="addHandle" type="text" placeholder="@alex | name@mail.com" required />
+        </label>
+        <label class="field">
+          <span>Tags (comma-separated)</span>
+          <input id="addTags" type="text" placeholder="research, policy" />
+        </label>
+        <label class="field">
+          <span>Note</span>
+          <textarea id="addNote" rows="2" placeholder="Where you met, context…"></textarea>
+        </label>
+        <button class="btn" type="submit">Add</button>
+        <span class="muted small" id="addStatus" aria-live="polite"></span>
+      </form>
+
+      <div class="hr"></div>
+
+      <h2>Filters</h2>
+      <div class="grid">
+        <label class="field">
+          <span>Search</span>
+          <input id="q" type="search" placeholder="Name, @handle, tag" />
+        </label>
+        <label class="field">
+          <span>Sort</span>
+          <select id="sort">
+            <option value="name">Name</option>
+            <option value="recent">Recently added</option>
+            <option value="active">Active first</option>
+            <option value="blocked">Blocked first</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Show</span>
+          <div class="checks">
+            <label><input id="showBlocked" type="checkbox" /> Blocked</label>
+            <label><input id="showInactive" type="checkbox" /> Inactive</label>
+          </div>
+        </label>
+      </div>
+    </section>
+
+    <!-- Middle: friends list -->
+    <section class="panel">
+      <div class="row head-row">
+        <h2>Friends</h2>
+        <div class="row">
+          <button class="btn-ghost small" id="exportBtn">Export</button>
+          <label for="importInput" class="btn-ghost small">Import</label>
+          <input id="importInput" type="file" accept="application/json" hidden />
+        </div>
+      </div>
+
+      <ul id="friendsList" class="cards" aria-live="polite"></ul>
+      <p class="muted small" id="emptyMsg" hidden>No friends yet. Add someone or accept an invite.</p>
+    </section>
+
+    <!-- Right: invites + danger -->
+    <section class="panel">
+      <h2>Invites</h2>
+
+      <div class="box">
+        <h3>Create invite</h3>
+        <p class="muted small">Generate a one-time code to share manually.</p>
+        <div class="row">
+          <button class="btn" id="makeInviteBtn">Generate code</button>
+          <input id="inviteCode" class="mono" type="text" readonly placeholder="code will appear here" />
+          <button class="btn-ghost" id="copyInviteBtn" type="button">Copy</button>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="box">
+          <h3>Incoming</h3>
+          <ul id="incomingList" class="list"></ul>
+          <div class="row">
+            <input id="pasteCode" type="text" placeholder="Paste invite code" />
+            <button class="btn" id="acceptCodeBtn">Accept</button>
+          </div>
+        </div>
+        <div class="box">
+          <h3>Outgoing</h3>
+          <ul id="outgoingList" class="list"></ul>
+        </div>
+      </div>
+
+      <div class="warn">
+        <h3>Danger zone</h3>
+        <div class="row">
+          <button class="btn-ghost danger" id="wipeBtn" type="button">Delete all friends data</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Templates -->
+  <template id="friendTmpl">
+    <li class="card">
+      <div class="avatar">👤</div>
+      <div class="info">
+        <div class="row">
+          <h3 class="name"></h3>
+          <span class="handle muted small"></span>
+          <span class="dot"></span>
+          <span class="status small"></span>
+        </div>
+        <p class="muted small added"></p>
+        <div class="tags"></div>
+        <label class="field note-field">
+          <span class="small">Note</span>
+          <textarea class="note" rows="2" placeholder="Add a note…"></textarea>
+        </label>
+      </div>
+      <div class="actions">
+        <button class="btn-ghost small act-message">Message</button>
+        <button class="btn-ghost small act-block">Block</button>
+        <button class="btn-ghost small act-remove">Remove</button>
+      </div>
+    </li>
+  </template>
+
+  <script src="friends.js"></script>
+</body>
+</html>

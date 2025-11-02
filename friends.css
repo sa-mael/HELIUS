@@ -1,0 +1,108 @@
+/* Grayscale tokens */
+html { color-scheme: light dark; }
+html[data-theme="light"]{
+  --bg:#ffffff; --fg:#141414; --muted:#7a7a7a; --line:#e6e6e6;
+  --panel:#f7f7f7; --panel2:#efefef; --card:#ffffff; --ink:#000000; --shadow:0 10px 30px rgba(0,0,0,.08);
+}
+html[data-theme="dark"]{
+  --bg:#0b0b0b; --fg:#e9e9e9; --muted:#9f9f9f; --line:#1b1b1b;
+  --panel:#101010; --panel2:#0e0e0e; --card:#121212; --ink:#ffffff; --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+/* Base */
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+a{ color:var(--fg); text-decoration:none }
+.muted{ color:var(--muted) }
+.small{ font-size:.92rem }
+.mono{ font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace }
+
+/* Back button */
+.back-fab{
+  position:fixed; left:18px; bottom:18px; z-index:50;
+  border:1px solid var(--line); background:var(--panel2); color:var(--fg);
+  padding:10px 14px; border-radius:999px; cursor:pointer; box-shadow:var(--shadow);
+}
+
+/* Top bar */
+.topbar{
+  position:sticky; top:0; z-index:20; height:64px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:0 16px; background:var(--panel); border-bottom:1px solid var(--line);
+  backdrop-filter:saturate(0%) blur(6px);
+}
+.brand{ font-weight:900; letter-spacing:.18em; }
+.top-actions{ display:flex; align-items:center; gap:10px }
+.btn, .btn-ghost{
+  border:1px solid var(--line); background:transparent; color:var(--fg);
+  padding:10px 14px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;
+  transition:transform .15s ease;
+}
+.btn:hover, .btn-ghost:hover{ transform:translateY(-1px) }
+.btn{ border-color:var(--ink) }
+.btn[disabled]{ opacity:.55; cursor:not-allowed }
+.btn-ghost.small, .btn.small{ padding:8px 10px; font-size:.92rem }
+.btn-ghost.danger{ color:#e66; border-color:var(--line) }
+html[data-theme="light"] .btn-ghost.danger{ color:#a00 }
+
+/* Layout */
+.wrap{
+  display:grid; gap:16px; padding:16px;
+  grid-template-columns: 1fr 1.3fr 0.9fr;
+}
+@media (max-width:1200px){ .wrap{ grid-template-columns:1fr 1fr } }
+@media (max-width:860px){ .wrap{ grid-template-columns:1fr } }
+
+/* Panels */
+.panel{
+  border:1px solid var(--line); border-radius:16px; background:var(--panel);
+  padding:14px; box-shadow:var(--shadow);
+}
+.panel h2{ margin:4px 0 10px; font-size:1.2rem }
+.hr{ height:1px; background:var(--line); margin:12px 0 }
+
+/* Forms */
+.grid{ display:grid; gap:12px; grid-template-columns:1fr 1fr }
+.grid-2{ display:grid; gap:12px; grid-template-columns:1fr 1fr }
+@media (max-width:680px){ .grid, .grid-2{ grid-template-columns:1fr } }
+.field{ display:grid; gap:6px }
+.field input, .field select, .field textarea{
+  padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:transparent; color:var(--fg);
+}
+.checks{ display:flex; gap:12px; flex-wrap:wrap }
+.row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap }
+
+/* Cards list */
+.cards{ list-style:none; padding:0; margin:0; display:grid; gap:12px }
+.card{
+  border:1px solid var(--line); border-radius:14px; background:var(--panel2);
+  padding:12px; display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:start;
+}
+.avatar{
+  width:48px; height:48px; border-radius:50%; display:grid; place-items:center;
+  background:var(--panel); border:1px solid var(--line); font-size:22px;
+}
+.card .name{ margin:0 }
+.card .handle{ opacity:.8 }
+.card .dot{ width:4px; height:4px; border-radius:50%; background:currentColor; opacity:.5 }
+.card .tags{ display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 }
+.tag{
+  border:1px solid var(--line); padding:4px 8px; border-radius:999px; background:transparent; font-size:.85rem;
+}
+.note-field textarea{ width:100% }
+.actions{ display:flex; gap:6px; align-items:center }
+
+/* Simple lists */
+.list{ list-style:none; padding:0; margin:0; display:grid; gap:8px }
+.box{
+  border:1px solid var(--line); border-radius:12px; background:var(--panel2);
+  padding:12px;
+}
+
+/* Head row */
+.head-row{ justify-content:space-between }
