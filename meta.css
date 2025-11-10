@@ -145,7 +145,7 @@ a{ color:var(--ink); text-decoration:none }
 
 /* Right: guide (ToC) */
 .toc-box{
-  position:sticky; top:96px;
+  position:fixed; top:120p;
   background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow);
   padding:12px; margin-right:8px;
 }
@@ -228,4 +228,12 @@ html[data-theme="light"] .back-fab{ background:#efefef; color:#111; border-color
 /* =========================
    Meta.css specific styles
    ========================= */   
-   
+   .topics-to-explore{
+    margin-top: 16px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--panelDeep);
+    top: sticky;
+    font-size: 1.1rem;
+   }

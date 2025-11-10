@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HELIUS — Notes</title>
+  <meta name="description" content="Create, search, tag, and organize notes for HELIUS." />
+  <link rel="stylesheet" href="notes.css" />
+</head>
+<body>
+
+  <!-- Always-visible Back -->
+  <button class="back-fab" id="backBtn" aria-label="Go back">← Back</button>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">HELIUS</div>
+    <nav class="top-actions">
+      <a class="btn-ghost" href="index.html">Home</a>
+      <a class="btn-ghost" href="meta.html">Docs</a>
+      <a class="btn-ghost" href="home.html">Dashboard</a>
+      <button class="btn-ghost" id="themeBtn" title="Toggle theme">◑</button>
+    </nav>
+  </header>
+
+  <!-- Main layout -->
+  <main class="wrap">
+
+    <!-- Left: controls -->
+    <section class="panel">
+      <div class="row head-row">
+        <h2>Controls</h2>
+        <button class="btn" id="newBtn">New note</button>
+      </div>
+
+      <label class="field">
+        <span>Search</span>
+        <input id="q" type="search" placeholder="Title, body, tag" />
+      </label>
+
+      <div class="grid">
+        <label class="field">
+          <span>Sort by</span>
+          <select id="sort">
+            <option value="updated">Updated</option>
+            <option value="created">Created</option>
+            <option value="title">Title</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Order</span>
+          <select id="order">
+            <option value="desc">Desc</option>
+            <option value="asc">Asc</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="checks">
+        <label><input id="pinnedFirst" type="checkbox" checked /> Pinned first</label>
+        <label><input id="showArchived" type="checkbox" /> Show archived</label>
+      </div>
+
+      <div class="hr"></div>
+
+      <h3>Tags</h3>
+      <div id="tagCloud" class="tags-cloud" aria-live="polite"></div>
+      <div class="row">
+        <input id="quickTag" type="text" placeholder="Filter by tag…">
+        <button class="btn-ghost" id="clearTag">Clear</button>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="row">
+        <button class="btn-ghost small" id="exportBtn">Export</button>
+        <label for="importInput" class="btn-ghost small">Import</label>
+        <input id="importInput" type="file" accept="application/json" hidden />
+      </div>
+    </section>
+
+    <!-- Middle: list -->
+    <section class="panel">
+      <div class="row head-row">
+        <h2>Notes</h2>
+        <div class="muted small"><span id="count">0</span> items</div>
+      </div>
+
+      <ul id="notesList" class="cards" aria-live="polite"></ul>
+      <p id="emptyMsg" class="muted small" hidden>No notes yet. Create one.</p>
+    </section>
+
+    <!-- Right: editor -->
+    <section class="panel">
+      <h2>Editor</h2>
+
+      <label class="field">
+        <span>Title</span>
+        <input id="title" type="text" placeholder="Note title" />
+      </label>
+
+      <label class="field">
+        <span>Tags (comma-separated)</span>
+        <input id="tags" type="text" placeholder="research, argument, risk" />
+      </label>
+
+      <!-- Minimal toolbar: inserts plain-text markers -->
+      <div class="toolbar">
+        <button class="tool" data-ins="**bold**">B</button>
+        <button class="tool" data-ins="_italic_"><i>I</i></button>
+        <button class="tool" data-ins="`code`">Code</button>
+        <button class="tool" data-ins="- list">•</button>
+        <button class="tool" data-ins="1. list">1.</button>
+        <button class="tool" data-ins="# Heading">H1</button>
+        <button class="tool" data-ins="## Heading">H2</button>
+      </div>
+
+      <label class="field">
+        <span>Body</span>
+        <textarea id="body" rows="14" placeholder="Write your note…"></textarea>
+      </label>
+
+      <div class="row">
+        <button class="btn" id="saveBtn" disabled>Save</button>
+        <button class="btn-ghost" id="dupBtn">Duplicate</button>
+        <button class="btn-ghost" id="pinBtn">Pin</button>
+        <button class="btn-ghost" id="archBtn">Archive</button>
+        <button class="btn-ghost danger" id="delBtn">Delete</button>
+      </div>
+
+      <p class="muted small" id="meta" aria-live="polite">No note selected.</p>
+    </section>
+
+  </main>
+
+  <!-- List item template -->
+  <template id="itemTmpl">
+    <li class="card">
+      <button class="pin" title="Pin">☆</button>
+      <div class="info">
+        <h3 class="title"></h3>
+        <p class="snippet muted small"></p>
+        <div class="tagline"></div>
+      </div>
+      <div class="meta small muted"></div>
+      <div class="actions">
+        <button class="btn-ghost small open">Open</button>
+        <button class="btn-ghost small more">⋮</button>
+      </div>
+    </li>
+  </template>
+
+  <script src="notes.js"></script>
+</body>
+</html>
